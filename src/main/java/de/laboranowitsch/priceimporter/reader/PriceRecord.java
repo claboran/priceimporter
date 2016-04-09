@@ -1,4 +1,4 @@
-package de.laboranowitsch.priceimporter;
+package de.laboranowitsch.priceimporter.reader;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

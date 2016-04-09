@@ -2,14 +2,13 @@ package de.laboranowitsch.priceimporter.repository;
 
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import de.laboranowitsch.priceimporter.domain.Region;
-import de.laboranowitsch.priceimporter.util.Profiles;
+import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

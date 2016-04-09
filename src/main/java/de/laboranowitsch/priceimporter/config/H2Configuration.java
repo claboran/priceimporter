@@ -1,7 +1,7 @@
 package de.laboranowitsch.priceimporter.config;
 
-import de.laboranowitsch.priceimporter.repository.H2SequenceGeneratorImpl;
-import de.laboranowitsch.priceimporter.repository.SequenceGenerator;
+import de.laboranowitsch.priceimporter.repository.sequence.H2SequenceGeneratorImpl;
+import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import de.laboranowitsch.priceimporter.util.Profiles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

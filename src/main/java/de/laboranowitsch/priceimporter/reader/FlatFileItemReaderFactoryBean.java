@@ -1,7 +1,6 @@
-package de.laboranowitsch.priceimporter;
+package de.laboranowitsch.priceimporter.reader;
 
 import org.springframework.batch.item.file.FlatFileItemReader;
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.factory.config.AbstractFactoryBean;

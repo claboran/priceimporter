@@ -1,5 +1,6 @@
-package de.laboranowitsch.priceimporter;
+package de.laboranowitsch.priceimporter.reader;
 
+import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

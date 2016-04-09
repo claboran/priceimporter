@@ -1,4 +1,4 @@
-package de.laboranowitsch.priceimporter.repository;
+package de.laboranowitsch.priceimporter.repository.sequence;
 
 /**
  * SequenceIdGenerator for generating database sequences.

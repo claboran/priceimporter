@@ -19,7 +19,7 @@ public class Region {
         return id;
     }
 
-    private void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public class Region {
         return region;
     }
 
-    private void setRegion(String region) {
+    public void setRegion(String region) {
         this.region = region;
     }
 
@@ -64,7 +64,7 @@ public class Region {
         return new Builder();
     }
 
-    private static final class Builder {
+    public static final class Builder {
         private Long id;
         private String region;
 

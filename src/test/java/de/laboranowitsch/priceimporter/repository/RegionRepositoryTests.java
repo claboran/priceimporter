@@ -3,6 +3,8 @@ package de.laboranowitsch.priceimporter.repository;
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import de.laboranowitsch.priceimporter.domain.Region;
 import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
+import de.laboranowitsch.priceimporter.util.dbloader.DbLoader;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -25,9 +29,6 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)
-@SqlGroup({
-        @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/create-tables-int-h2.sql"})
-})
 public class RegionRepositoryTests {
 
     private static final Logger LOG = LoggerFactory.getLogger(RegionRepositoryTests.class);
@@ -36,6 +37,13 @@ public class RegionRepositoryTests {
     private RegionRepository regionRepository;
     @Autowired
     private SequenceGenerator sequenceGenerator;
+    @Autowired
+    private DbLoader dbLoader;
+
+    @Before
+    public void before() throws SQLException {
+        dbLoader.prepareDatabase();
+    }
 
     @Test
     public void testContextLoads() {

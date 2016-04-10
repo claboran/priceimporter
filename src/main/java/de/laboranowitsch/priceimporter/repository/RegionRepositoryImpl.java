@@ -4,6 +4,7 @@ import de.laboranowitsch.priceimporter.domain.Region;
 import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import de.laboranowitsch.priceimporter.util.ActualParameterHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -29,17 +30,24 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SequenceGenerator sequenceGenerator;
+    private String regionQuery;
+    private String insertStmt;
 
     @Autowired
-    public RegionRepositoryImpl(final DataSource dataSource, final SequenceGenerator sequenceGenerator) {
+    public RegionRepositoryImpl(final DataSource dataSource,
+                                final SequenceGenerator sequenceGenerator,
+                                @Value("${priceimporter.table.name.d_region}") final String regionTableName) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.sequenceGenerator = sequenceGenerator;
+        regionQuery = REGION_QUERY.replace("d_region", regionTableName);
+        insertStmt = INSERT_STMT.replace("d_region", regionTableName);
     }
+
     @Override
     public Region findByRegion(String region) {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource(REGION_PARAM, region);
 
-        List<Region> result = jdbcTemplate.query(REGION_QUERY, sqlParameterSource,
+        List<Region> result = jdbcTemplate.query(regionQuery, sqlParameterSource,
                 ((rs, rowNum) -> Region.builder().id(rs.getLong(1)).region(rs.getString(2)).build()));
 
         if(result.size() > 1) {
@@ -56,7 +64,7 @@ public class RegionRepositoryImpl implements RegionRepository {
         Long nextVal = sequenceGenerator.getNextSequence("region_seq");
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource(ID_PARAM, nextVal);
         mapSqlParameterSource.addValue(REGION_PARAM, region.getRegion());
-        jdbcTemplate.update(INSERT_STMT, mapSqlParameterSource);
+        jdbcTemplate.update(insertStmt, mapSqlParameterSource);
         return nextVal;
     }
 

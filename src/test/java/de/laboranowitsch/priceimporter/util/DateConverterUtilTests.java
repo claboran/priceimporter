@@ -7,18 +7,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Testing of {@link ZoneDateTime} utility.
+ * Testing of {@link DateConverterUtil} utility.
  *
  * Created by cla on 4/9/16.
  */
-public class ZoneDateTimeTests {
+public class DateConverterUtilTests {
 
     /**
-     * Test conversion
+     * Test conversion from String to ZoneDateTime
      */
     @Test
-    public void testConversion() {
-        ZonedDateTime dateTime = de.laboranowitsch.priceimporter.util.ZoneDateTime.of("2016/03/22 04:30:00");
+    public void testConversionString2ZoneDateTime() {
+        ZonedDateTime dateTime = DateConverterUtil.convertString2ZoneDateTime("2016/03/22 04:30:00");
         assertThat("has the right year", dateTime.getYear(), is(equalTo(2016)));
         assertThat("has the right month", dateTime.getMonthValue(), is(equalTo(3)));
         assertThat("has the right day of month", dateTime.getDayOfMonth(), is(equalTo(22)));

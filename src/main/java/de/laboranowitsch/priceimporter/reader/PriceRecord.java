@@ -1,10 +1,12 @@
 package de.laboranowitsch.priceimporter.reader;
 
-import java.time.ZoneId;
+import de.laboranowitsch.priceimporter.util.DateConverterUtil;
+
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
+ * Representing a row in import CSV format.
+ *
  * Created by cla on 3/22/16.
  */
 public class PriceRecord {
@@ -38,9 +40,7 @@ public class PriceRecord {
     }
 
     public void setSettlementDate(String settlementDate) {
-        this.settlementDate = ZonedDateTime.parse(settlementDate,
-                DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")
-                        .withZone(ZoneId.of("Australia/NSW")));
+        this.settlementDate = DateConverterUtil.convertString2ZoneDateTime(settlementDate);
     }
 
     public Double getTotalDemand() {

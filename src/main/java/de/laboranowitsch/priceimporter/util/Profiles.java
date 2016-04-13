@@ -8,4 +8,5 @@ package de.laboranowitsch.priceimporter.util;
 public class Profiles {
     
     public static final String INT_TEST_H2 = "int-test-h2";
+    public static final String INT_TEST_HANA = "int-test-hana";
 }

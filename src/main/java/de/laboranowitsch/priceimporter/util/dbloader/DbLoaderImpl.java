@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.Connection;
 
+import static org.springframework.jdbc.datasource.init.ScriptUtils.*;
+
 /**
  * Implements the {@link DbLoader} interface.
  *
@@ -23,20 +25,38 @@ public class DbLoaderImpl implements DbLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(DbLoaderImpl.class);
     private final String createScriptName;
+    private final String dropScriptName;
     private final DataSource dataSource;
 
     @Autowired
-    public DbLoaderImpl(@Value("${priceimporter.create.script}") final String createScriptName, final DataSource dataSource) {
+    public DbLoaderImpl(@Value("${priceimporter.create.script}") final String createScriptName,
+                        @Value("${priceimporter.drop.script}") final String dropScriptName, final DataSource dataSource) {
         this.createScriptName = createScriptName;
+        this.dropScriptName = dropScriptName;
         this.dataSource = dataSource;
     }
 
     @Override
     public void prepareDatabase() {
+        executeDropScript();
+        executeCreateScript();
+    }
+
+    private void executeDropScript() {
+        ClassPathResource resource = new ClassPathResource(dropScriptName);
+        LOG.info("Executing DROP-Script: {}", createScriptName);
+        Connection con = DataSourceUtils.getConnection(dataSource);
+        ScriptUtils.executeSqlScript(con, new EncodedResource(resource, "UTF-8"), true, true, DEFAULT_COMMENT_PREFIX, DEFAULT_STATEMENT_SEPARATOR,
+                DEFAULT_BLOCK_COMMENT_START_DELIMITER, DEFAULT_BLOCK_COMMENT_END_DELIMITER);
+        DataSourceUtils.releaseConnection(con, dataSource);
+    }
+
+    private void executeCreateScript() {
         ClassPathResource resource = new ClassPathResource(createScriptName);
-        LOG.info("Executing Loader-Script: {}", createScriptName);
+        LOG.info("Executing CREATE-Script: {}", createScriptName);
         Connection con = DataSourceUtils.getConnection(dataSource);
         ScriptUtils.executeSqlScript(con, new EncodedResource(resource, "UTF-8"));
         DataSourceUtils.releaseConnection(con, dataSource);
+
     }
 }

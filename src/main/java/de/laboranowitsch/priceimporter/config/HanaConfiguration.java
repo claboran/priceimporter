@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 import javax.sql.DataSource;
 
 /**
- * H2 Configuration class.
+ * Hana Configuration class.
  *
  * Created by cla on 4/8/16.
  */

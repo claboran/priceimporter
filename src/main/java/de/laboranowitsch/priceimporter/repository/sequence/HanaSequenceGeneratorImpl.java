@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 /**
- * H2 {@link SequenceGenerator} implementation.
+ * Hana {@link SequenceGenerator} implementation.
  *
  * Created by cla on 4/8/16.
  */

@@ -2,12 +2,8 @@ package de.laboranowitsch.priceimporter.config;
 
 import de.laboranowitsch.priceimporter.util.Profiles;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by cla on 4/13/16.

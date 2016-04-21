@@ -85,5 +85,18 @@
 				</dependency>
 			</dependencies>
 		</profile>
+		<profile>
+			<id>int-test-hana</id>
+			<properties>
+				<spring.profiles.active>int-test-hana</spring.profiles.active>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+					<scope>runtime</scope>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 </project>

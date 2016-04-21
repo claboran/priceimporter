@@ -30,17 +30,20 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SequenceGenerator sequenceGenerator;
+    private final String sequenceName;
     private String regionQuery;
     private String insertStmt;
 
     @Autowired
     public RegionRepositoryImpl(final DataSource dataSource,
                                 final SequenceGenerator sequenceGenerator,
-                                @Value("${priceimporter.table.name.d_region}") final String regionTableName) {
+                                @Value("${priceimporter.table.name.d_region}") final String regionTableName,
+                                @Value("${priceimporter.seq.name.d_region}") final String sequenceName) {
         this.jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.sequenceGenerator = sequenceGenerator;
         regionQuery = REGION_QUERY.replace("d_region", regionTableName);
         insertStmt = INSERT_STMT.replace("d_region", regionTableName);
+        this.sequenceName = sequenceName;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     @Override
     public Long saveNew(Region region) {
-        Long nextVal = sequenceGenerator.getNextSequence("region_seq");
+        Long nextVal = sequenceGenerator.getNextSequence(sequenceName);
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource(ID_PARAM, nextVal);
         mapSqlParameterSource.addValue(REGION_PARAM, region.getRegion());
         jdbcTemplate.update(insertStmt, mapSqlParameterSource);

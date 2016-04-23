@@ -81,7 +81,6 @@
 				<dependency>
 					<groupId>com.h2database</groupId>
 					<artifactId>h2</artifactId>
-					<scope>runtime</scope>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -92,9 +91,9 @@
 			</properties>
 			<dependencies>
 				<dependency>
-					<groupId>com.h2database</groupId>
-					<artifactId>h2</artifactId>
-					<scope>runtime</scope>
+					<groupId>com.sap.db</groupId>
+					<artifactId>ngdbc</artifactId>
+					<version>1.0.0</version>
 				</dependency>
 			</dependencies>
 		</profile>

@@ -53,8 +53,8 @@ public class RegionRepositoryTests {
     @Transactional
     @Test
     public void testSequenceGenerator() {
-        assertThat("sequence has 1", sequenceGenerator.getNextSequence("region_seq"), is(equalTo(1L)));
-        assertThat("sequence has 2", sequenceGenerator.getNextSequence("region_seq"), is(equalTo(2L)));
+        assertThat("sequence has 1", sequenceGenerator.getNextSequence("int_test_region_seq"), is(equalTo(1L)));
+        assertThat("sequence has 2", sequenceGenerator.getNextSequence("int_test_region_seq"), is(equalTo(2L)));
     }
     @Transactional
     @Test

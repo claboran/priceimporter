@@ -1,7 +1,5 @@
 package de.laboranowitsch.priceimporter.util.dbloader;
 
-import java.sql.SQLException;
-
 /**
  * DBLoader keeps track of the different loading strategy for H2 and Hana.
  *

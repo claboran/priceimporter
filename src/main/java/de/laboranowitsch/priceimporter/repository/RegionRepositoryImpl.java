@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import java.util.*;
 
 /**
- * Repository implementing {@link RegionRepository} for dealing with {@link Region}s
+ * Repository implementing {@link RegionRepository} for dealing with {@link Region}s.
  *
  * Created by cla on 4/8/16.
  */

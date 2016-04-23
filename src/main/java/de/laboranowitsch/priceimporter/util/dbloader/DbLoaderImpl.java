@@ -30,7 +30,8 @@ public class DbLoaderImpl implements DbLoader {
 
     @Autowired
     public DbLoaderImpl(@Value("${priceimporter.create.script}") final String createScriptName,
-                        @Value("${priceimporter.drop.script}") final String dropScriptName, final DataSource dataSource) {
+                        @Value("${priceimporter.drop.script}") final String dropScriptName,
+                        final DataSource dataSource) {
         this.createScriptName = createScriptName;
         this.dropScriptName = dropScriptName;
         this.dataSource = dataSource;

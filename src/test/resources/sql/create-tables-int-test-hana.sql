@@ -24,7 +24,7 @@ create TABLE int_test_d_date_time (
   id BIGINT PRIMARY KEY NOT NULL,
   day_of_month INTEGER,
   month_of_year INTEGER,
-  _year INTEGER,
+  the_year INTEGER,
   hour_of_day INTEGER,
   minutes_of_hour INTEGER
 );

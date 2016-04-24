@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,13 +61,13 @@ public class RegionRepositoryTests {
     }
     @Transactional
     @Test
-    public void testInserExisting() {
+    public void testInsertExisting() {
         assertThat("one entry has been inserted", regionRepository.save(Region.builder().region("NSW").build()), is(equalTo(1L)));
         assertThat("already existing is used", regionRepository.save(Region.builder().region("NSW").build()), is(equalTo(1L)));
     }
     @Transactional
     @Test
-    public void testInserSecondOne() {
+    public void testInsertSecondOne() {
         assertThat("one entry has been inserted", regionRepository.save(Region.builder().region("NSW").build()), is(equalTo(1L)));
         assertThat("already existing is used", regionRepository.save(Region.builder().region("NSW").build()), is(equalTo(1L)));
         assertThat("one entry has been inserted", regionRepository.save(Region.builder().region("XYZ").build()), is(equalTo(2L)));

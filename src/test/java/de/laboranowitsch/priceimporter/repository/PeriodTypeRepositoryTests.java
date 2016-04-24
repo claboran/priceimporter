@@ -1,6 +1,7 @@
 package de.laboranowitsch.priceimporter.repository;
 
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
+import de.laboranowitsch.priceimporter.domain.Period;
 import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import de.laboranowitsch.priceimporter.util.dbloader.DbLoader;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 
@@ -45,5 +47,31 @@ public class PeriodTypeRepositoryTests {
     public void testContextLoads() {
         assertThat("wiring of dependencies is done properly", periodRepository, is(not(nullValue())));
         assertThat("wiring of dependencies is done properly", sequenceGenerator, is(not(nullValue())));
+    }
+
+    @Transactional
+    @Test
+    public void testSequenceGenerator() {
+        assertThat("sequence has 1", sequenceGenerator.getNextSequence("int_test_period_type_seq"), is(equalTo(1L)));
+        assertThat("sequence has 2", sequenceGenerator.getNextSequence("int_test_period_type_seq"), is(equalTo(2L)));
+    }
+    @Transactional
+    @Test
+    public void testInsertNew() {
+        assertThat("one entry has been inserted", periodRepository.save(Period.builder().period("TRADE").build()), is(equalTo(1L)));
+    }
+    @Transactional
+    @Test
+    public void testInsertExisting() {
+        assertThat("one entry has been inserted", periodRepository.save(Period.builder().period("TRADE").build()), is(equalTo(1L)));
+        assertThat("existing entry is used", periodRepository.save(Period.builder().period("TRADE").build()), is(equalTo(1L)));
+    }
+    @Transactional
+    @Test
+    public void testInsertSecondOne() {
+        assertThat("one entry has been inserted", periodRepository.save(Period.builder().period("TRADE").build()), is(equalTo(1L)));
+        assertThat("existing entry is used", periodRepository.save(Period.builder().period("TRADE").build()), is(equalTo(1L)));
+        assertThat("one entry has been inserted", periodRepository.save(Period.builder().period("PD").build()), is(equalTo(2L)));
+        assertThat("existing entry is used", periodRepository.save(Period.builder().period("PD").build()), is(equalTo(2L)));
     }
 }

@@ -30,8 +30,8 @@ public class PeriodRepositoryImpl implements PeriodRepository{
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SequenceGenerator sequenceGenerator;
     private final String sequenceName;
-    private String periodQuery;
-    private String insertStmt;
+    private final String periodQuery;
+    private final String insertStmt;
 
     @Autowired
     public PeriodRepositoryImpl(final DataSource dataSource,

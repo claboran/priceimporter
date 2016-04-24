@@ -31,8 +31,8 @@ public class RegionRepositoryImpl implements RegionRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final SequenceGenerator sequenceGenerator;
     private final String sequenceName;
-    private String regionQuery;
-    private String insertStmt;
+    private final String regionQuery;
+    private final String insertStmt;
 
     @Autowired
     public RegionRepositoryImpl(final DataSource dataSource,

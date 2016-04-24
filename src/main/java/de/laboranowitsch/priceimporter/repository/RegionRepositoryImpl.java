@@ -54,7 +54,7 @@ public class RegionRepositoryImpl implements RegionRepository {
                 ((rs, rowNum) -> Region.builder().id(rs.getLong(1)).region(rs.getString(2)).build()));
 
         if(result.size() > 1) {
-            throw new RuntimeException("Unexpected number of Regions found: " + result.size() + " only one is expexted.");
+            throw new RuntimeException("Unexpected number of Regions found: " + result.size() + " only one is expected.");
         }
         if(result.size() == 0) {
             return null;

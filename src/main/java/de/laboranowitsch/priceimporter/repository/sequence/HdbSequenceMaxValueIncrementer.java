@@ -5,6 +5,8 @@ import org.springframework.jdbc.support.incrementer.AbstractSequenceMaxValueIncr
 import javax.sql.DataSource;
 
 /**
+ * Spring Batch incrementer for the Hana database.
+ *
  * Created by cla on 4/23/16.
  */
 public class HdbSequenceMaxValueIncrementer extends AbstractSequenceMaxValueIncrementer {

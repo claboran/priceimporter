@@ -26,11 +26,11 @@ public class DateTimeRepositoryImpl implements DateTimeRepository {
     private static final Logger LOG = LoggerFactory.getLogger(DateTimeRepositoryImpl.class);
 
     private static final String ID_PARAM = "id";
-    private static final String YEAR_PARAM = "year";
+    private static final String YEAR_PARAM = "the_year";
     private static final String MONTH_OF_YEAR_PARAM = "month_of_year";
     private static final String DAY_OF_MONTH_PARAM = "day_of_month";
     private static final String HOUR_OF_DAY_PARAM = "hour_of_day";
-    private static final String MINUTE_OF_HOUR_PARAM = "minute_of_hour";
+    private static final String MINUTES_OF_HOUR_PARAM = "minutes_of_hour";
 
     private static final String DATE_TIME_QUERY = "select * from d_date_time where ";
     private static final String INSERT_STMT = "insert into d_date_time (";
@@ -58,17 +58,41 @@ public class DateTimeRepositoryImpl implements DateTimeRepository {
     @Override
     public DateTime findByDateTime(DateTime dateTime) {
         SqlParameterSource sqlParameterSource = createQueryParameterMap(dateTime);
-        return null;
+        LOG.info("SqlParameterMap: {}", sqlParameterSource);
+        List<DateTime> result = jdbcTemplate.query(dateTimeQuery, sqlParameterSource,
+                ((rs, rowNum) -> DateTime.builder().id(rs.getLong(1))
+                        .dayOfMonth(rs.getInt(2))
+                        .monthOfYear(rs.getInt(3))
+                        .year(rs.getInt(4))
+                        .hourOfDay(rs.getInt(5))
+                        .minuteOfHour(rs.getInt(6))
+                        .build()));
+
+        if(result.size() > 1) {
+            throw new RuntimeException("Unexpected number of DayTime entries found: " + result.size() + " only one is expected.");
+        }
+        if(result.size() == 0) {
+            return null;
+        }
+        return result.get(0);
     }
 
     @Override
     public Long saveNew(DateTime dateTime) {
-        return null;
+        Long nextVal = sequenceGenerator.getNextSequence(sequenceName);
+        dateTime.setId(nextVal);
+        MapSqlParameterSource mapSqlParameterSource = createInsertStmtParameterMap(dateTime);
+        jdbcTemplate.update(insertStmt, mapSqlParameterSource);
+        return nextVal;
     }
 
     @Override
     public Long save(DateTime dateTime) {
-        return null;
+        DateTime result = findByDateTime(dateTime);
+        if(result == null) {
+            return saveNew(dateTime);
+        }
+        return result.getId();
     }
 
     private MapSqlParameterSource createQueryParameterMap(DateTime dateTime) {
@@ -76,7 +100,7 @@ public class DateTimeRepositoryImpl implements DateTimeRepository {
         sqlParameterSource.addValue(MONTH_OF_YEAR_PARAM, dateTime.getMonthOfYear());
         sqlParameterSource.addValue(YEAR_PARAM, dateTime.getYear());
         sqlParameterSource.addValue(HOUR_OF_DAY_PARAM, dateTime.getHourOfDay());
-        sqlParameterSource.addValue(MINUTE_OF_HOUR_PARAM, dateTime.getMinuteOfHour());
+        sqlParameterSource.addValue(MINUTES_OF_HOUR_PARAM, dateTime.getMinuteOfHour());
         return sqlParameterSource;
     }
 
@@ -97,7 +121,7 @@ public class DateTimeRepositoryImpl implements DateTimeRepository {
                 .append(" and hour_of_day = ")
                 .append(ActualParameterHelper.makeActualParameterOf(HOUR_OF_DAY_PARAM))
                 .append(" and minutes_of_hour = ")
-                .append(ActualParameterHelper.makeActualParameterOf(MINUTE_OF_HOUR_PARAM))
+                .append(ActualParameterHelper.makeActualParameterOf(MINUTES_OF_HOUR_PARAM))
                 .toString();
     }
 
@@ -108,14 +132,14 @@ public class DateTimeRepositoryImpl implements DateTimeRepository {
                 .append(MONTH_OF_YEAR_PARAM + ", ")
                 .append(YEAR_PARAM + ", ")
                 .append(HOUR_OF_DAY_PARAM + ", ")
-                .append(MINUTE_OF_HOUR_PARAM)
+                .append(MINUTES_OF_HOUR_PARAM)
                 .append(") values(")
                 .append(ActualParameterHelper.makeActualParameterOf(ID_PARAM) + ", ")
                 .append(ActualParameterHelper.makeActualParameterOf(DAY_OF_MONTH_PARAM) + ", ")
                 .append(ActualParameterHelper.makeActualParameterOf(MONTH_OF_YEAR_PARAM) + ", ")
                 .append(ActualParameterHelper.makeActualParameterOf(YEAR_PARAM) + ", ")
                 .append(ActualParameterHelper.makeActualParameterOf(HOUR_OF_DAY_PARAM) + ", ")
-                .append(ActualParameterHelper.makeActualParameterOf(MINUTE_OF_HOUR_PARAM))
+                .append(ActualParameterHelper.makeActualParameterOf(MINUTES_OF_HOUR_PARAM))
                 .append(")")
                 .toString();
     }

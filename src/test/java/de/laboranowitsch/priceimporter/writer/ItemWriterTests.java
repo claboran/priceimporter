@@ -26,8 +26,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Tests for {@link RecordImportService}
- * for {@link CompositeRecord}.
+ * Tests for Spring Batch {@link ItemWriter}
  *
  * Created by cla on 5/06/16.
  */

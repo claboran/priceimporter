@@ -1,15 +1,26 @@
 package de.laboranowitsch.priceimporter;
 
+import de.laboranowitsch.priceimporter.domain.CompositeRecord;
+import de.laboranowitsch.priceimporter.processor.PriceRecordToCompositeRecordProcessor;
 import de.laboranowitsch.priceimporter.reader.FlatFileItemReaderFactoryBean;
 import de.laboranowitsch.priceimporter.reader.PriceRecord;
+import de.laboranowitsch.priceimporter.service.RecordImportService;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.jsr.ItemWriteListenerAdapter;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.adapter.ItemWriterAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
+
+    @Autowired
+    private RecordImportService recordImportService;
 
     // tag::readerwriterprocessor[]
     @Bean
@@ -18,6 +29,20 @@ public class BatchConfiguration {
         flatFileItemReaderFactoryBean.setResource("GRAPH_30NSW1.csv");
         flatFileItemReaderFactoryBean.afterPropertiesSet();
         return flatFileItemReaderFactoryBean.getObject();
+    }
+
+    @Bean
+    public ItemWriter<CompositeRecord> itemWriter() throws Exception {
+        ItemWriterAdapter<CompositeRecord> itemWriterAdapter = new ItemWriterAdapter<>();
+        itemWriterAdapter.setTargetObject(recordImportService);
+        itemWriterAdapter.setTargetMethod("importRecord");
+        itemWriterAdapter.afterPropertiesSet();
+        return itemWriterAdapter;
+    }
+
+    @Bean
+    public ItemProcessor<PriceRecord, CompositeRecord> itemProcessor() {
+        return new PriceRecordToCompositeRecordProcessor();
     }
 
 //    @Bean

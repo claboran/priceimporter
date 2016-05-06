@@ -2,6 +2,7 @@ package de.laboranowitsch.priceimporter.service;
 
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import de.laboranowitsch.priceimporter.domain.*;
+import de.laboranowitsch.priceimporter.testutil.CompositeRecordHelper;
 import de.laboranowitsch.priceimporter.util.dbloader.DbLoader;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,7 +56,7 @@ public class RecordImportServiceTests {
     @Transactional
     @Test
     public void testImportRecord() {
-        CompositeRecord compositeRecord = createCompositeRecord(TRADE, 23.45, 567.89);
+        CompositeRecord compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 23.45, 567.89);
         recordImportService.importRecord(compositeRecord);
         List<FactData> factData = getFactData();
         assertThat("one entry has been inserted", factData.size(), is(equalTo(1)));
@@ -74,9 +75,9 @@ public class RecordImportServiceTests {
     @Transactional
     @Test
     public void testUpdateRecord() {
-        CompositeRecord compositeRecord = createCompositeRecord(TRADE, 23.45, 567.89);
+        CompositeRecord compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 23.45, 567.89);
         recordImportService.importRecord(compositeRecord);
-        compositeRecord = createCompositeRecord(TRADE, 17.89, 1000.56);
+        compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 17.89, 1000.56);
         recordImportService.importRecord(compositeRecord);
         List<FactData> factData = getFactData();
         assertThat("one entry has been inserted", factData.size(), is(equalTo(1)));
@@ -95,9 +96,9 @@ public class RecordImportServiceTests {
     @Transactional
     @Test
     public void testImportSecondRecord() {
-        CompositeRecord compositeRecord = createCompositeRecord(TRADE, 23.45, 567.89);
+        CompositeRecord compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 23.45, 567.89);
         recordImportService.importRecord(compositeRecord);
-        compositeRecord = createCompositeRecord(PD, 17.89, 1000.67);
+        compositeRecord = CompositeRecordHelper.createCompositeRecord(PD, 17.89, 1000.67);
         recordImportService.importRecord(compositeRecord);
 
         List<FactData> factData = getFactData();
@@ -125,17 +126,4 @@ public class RecordImportServiceTests {
                 .build()));
     }
 
-    private CompositeRecord createCompositeRecord(String periodType, Double rpr, Double totalDemand) {
-        CompositeRecord compositeRecord = new CompositeRecord();
-        compositeRecord.setDateTime(DateTime.builder().dayOfMonth(1)
-                .monthOfYear(1)
-                .year(2016)
-                .hourOfDay(00)
-                .minuteOfHour(00)
-                .build());
-        compositeRecord.setPeriod(Period.builder().period(periodType).build());
-        compositeRecord.setRegion(Region.builder().region("NSW").build());
-        compositeRecord.setFactData(FactData.builder().rpr(rpr).totalDemand(totalDemand).build());
-        return compositeRecord;
-    }
 }

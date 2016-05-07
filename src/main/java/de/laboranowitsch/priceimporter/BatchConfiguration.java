@@ -5,8 +5,14 @@ import de.laboranowitsch.priceimporter.processor.PriceRecordToCompositeRecordPro
 import de.laboranowitsch.priceimporter.reader.FlatFileItemReaderFactoryBean;
 import de.laboranowitsch.priceimporter.reader.PriceRecord;
 import de.laboranowitsch.priceimporter.service.RecordImportService;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecutionListener;
+import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.jsr.ItemWriteListenerAdapter;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -22,14 +28,6 @@ public class BatchConfiguration {
     @Autowired
     private RecordImportService recordImportService;
 
-    // tag::readerwriterprocessor[]
-    @Bean
-    public ItemReader<PriceRecord> reader() throws Exception {
-        FlatFileItemReaderFactoryBean flatFileItemReaderFactoryBean = new FlatFileItemReaderFactoryBean();
-        flatFileItemReaderFactoryBean.setResource("GRAPH_30NSW1.csv");
-        flatFileItemReaderFactoryBean.afterPropertiesSet();
-        return flatFileItemReaderFactoryBean.getObject();
-    }
 
     @Bean
     public ItemWriter<CompositeRecord> itemWriter() throws Exception {
@@ -44,6 +42,8 @@ public class BatchConfiguration {
     public ItemProcessor<PriceRecord, CompositeRecord> itemProcessor() {
         return new PriceRecordToCompositeRecordProcessor();
     }
+
+
 
 //    @Bean
 //    public DataSource dataSource() {

@@ -1,5 +1,7 @@
 package de.laboranowitsch.priceimporter.config;
 
+import de.laboranowitsch.priceimporter.reader.FlatFileItemReaderFactoryBean;
+import de.laboranowitsch.priceimporter.reader.PriceRecord;
 import de.laboranowitsch.priceimporter.repository.sequence.CustomDataFieldMaxValueIncrementerFactory;
 import de.laboranowitsch.priceimporter.repository.sequence.HanaSequenceGeneratorImpl;
 import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
@@ -11,6 +13,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
+import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -52,6 +55,13 @@ public class HanaConfiguration implements BatchConfigurer {
         return ds;
     }
 
+    @Bean
+    public ItemReader<PriceRecord> reader() throws Exception {
+        FlatFileItemReaderFactoryBean flatFileItemReaderFactoryBean = new FlatFileItemReaderFactoryBean();
+        flatFileItemReaderFactoryBean.setResource("GRAPH_30NSW1.csv");
+        flatFileItemReaderFactoryBean.afterPropertiesSet();
+        return flatFileItemReaderFactoryBean.getObject();
+    }
 
     @Bean
     public SequenceGenerator sequenceGenerator() {
@@ -65,6 +75,7 @@ public class HanaConfiguration implements BatchConfigurer {
         jobRepositoryFactoryBean.setDataSource(dataSource());
         jobRepositoryFactoryBean.setTransactionManager(getTransactionManager());
         jobRepositoryFactoryBean.setIncrementerFactory(new CustomDataFieldMaxValueIncrementerFactory(dataSource()));
+        jobRepositoryFactoryBean.setTablePrefix("INT_TEST_BATCH_");
         jobRepositoryFactoryBean.setClobType(Types.CLOB); //TODO check if need to change to NCLOB
         jobRepositoryFactoryBean.afterPropertiesSet();
         return jobRepositoryFactoryBean.getObject();

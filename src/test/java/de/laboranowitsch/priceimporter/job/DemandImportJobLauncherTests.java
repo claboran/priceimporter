@@ -2,6 +2,7 @@ package de.laboranowitsch.priceimporter.job;
 
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import de.laboranowitsch.priceimporter.launcher.DemandImportJobLauncher;
+import de.laboranowitsch.priceimporter.testutil.FactDataRecordHelper;
 import de.laboranowitsch.priceimporter.util.dbloader.DbLoader;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +15,10 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -39,6 +41,9 @@ public class DemandImportJobLauncherTests {
     @Autowired
     private DemandImportJobLauncher demandImportJobLauncher;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Before
     public void before() throws SQLException {
         dbLoader.prepareDatabase();
@@ -49,9 +54,9 @@ public class DemandImportJobLauncherTests {
     }
 
     @Test
-    @Commit
     public void testJobRun() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
         demandImportJobLauncher.launchDemandImportJob("test-job");
+        assertThat("Importer job has the right number of elements", FactDataRecordHelper.getFactData(dataSource).size(), is(equalTo(96)));
     }
 
 }

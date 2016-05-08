@@ -3,6 +3,7 @@ package de.laboranowitsch.priceimporter.service;
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import de.laboranowitsch.priceimporter.domain.*;
 import de.laboranowitsch.priceimporter.testutil.CompositeRecordHelper;
+import de.laboranowitsch.priceimporter.testutil.FactDataRecordHelper;
 import de.laboranowitsch.priceimporter.util.dbloader.DbLoader;
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class RecordImportServiceTests {
     public void testImportRecord() {
         CompositeRecord compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 23.45, 567.89);
         recordImportService.importRecord(compositeRecord);
-        List<FactData> factData = getFactData();
+        List<FactData> factData = FactDataRecordHelper.getFactData(dataSource);
         assertThat("one entry has been inserted", factData.size(), is(equalTo(1)));
 
         FactData factDataRecord = factData.get(0);
@@ -80,7 +81,7 @@ public class RecordImportServiceTests {
         recordImportService.importRecord(compositeRecord);
         compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 17.89, 1000.56);
         recordImportService.importRecord(compositeRecord);
-        List<FactData> factData = getFactData();
+        List<FactData> factData = FactDataRecordHelper.getFactData(dataSource);
         assertThat("one entry has been inserted", factData.size(), is(equalTo(1)));
 
         FactData factDataRecord = factData.get(0);
@@ -102,7 +103,7 @@ public class RecordImportServiceTests {
         compositeRecord = CompositeRecordHelper.createCompositeRecord(PD, 17.89, 1000.67);
         recordImportService.importRecord(compositeRecord);
 
-        List<FactData> factData = getFactData();
+        List<FactData> factData = FactDataRecordHelper.getFactData(dataSource);
         assertThat("one entry has been inserted", factData.size(), is(equalTo(2)));
 
         FactData factDataRecord = factData.get(1);
@@ -116,15 +117,5 @@ public class RecordImportServiceTests {
         assertThat("contains sequence value 1L", factDataRecord.getRegionId(), is(equalTo(1L)));
     }
 
-    private List<FactData> getFactData() {
-        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        return jdbcTemplate.query("select * from int_test_f_energy_price_demand", ((rs, rowNum) -> FactData.builder().id(rs.getLong(1))
-                .totalDemand(rs.getDouble(2))
-                .rpr(rs.getDouble(3))
-                .regionId(rs.getLong(4))
-                .periodId(rs.getLong(5))
-                .dateTimeId(rs.getLong(6))
-                .build()));
-    }
 
 }

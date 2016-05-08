@@ -4,6 +4,7 @@ import de.laboranowitsch.priceimporter.PriceImporterApplication;
 import de.laboranowitsch.priceimporter.domain.*;
 import de.laboranowitsch.priceimporter.service.RecordImportService;
 import de.laboranowitsch.priceimporter.testutil.CompositeRecordHelper;
+import de.laboranowitsch.priceimporter.testutil.FactDataRecordHelper;
 import de.laboranowitsch.priceimporter.util.dbloader.DbLoader;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +36,8 @@ import static org.hamcrest.Matchers.*;
 public class ItemWriterTests {
 
     private static final Logger LOG = LoggerFactory.getLogger(ItemWriterTests.class);
-    public static final String TRADE = "TRADE";
-    public static final String PD = "PD";
+    private static final String TRADE = "TRADE";
+    private static final String PD = "PD";
 
     @Autowired
     private DbLoader dbLoader;
@@ -60,7 +61,7 @@ public class ItemWriterTests {
     public void testImportRecord() throws Exception {
         CompositeRecord compositeRecord = CompositeRecordHelper.createCompositeRecord(TRADE, 23.45, 567.89);
         itemWriter.write(Arrays.asList(compositeRecord));
-        List<FactData> factData = getFactData();
+        List<FactData> factData = FactDataRecordHelper.getFactData(dataSource);
         assertThat("one entry has been inserted", factData.size(), is(equalTo(1)));
 
         FactData factDataRecord = factData.get(0);
@@ -72,17 +73,6 @@ public class ItemWriterTests {
         assertThat("contains sequence value 1L", factDataRecord.getDateTimeId(), is(equalTo(1L)));
         assertThat("contains sequence value 1L", factDataRecord.getPeriodId(), is(equalTo(1L)));
         assertThat("contains sequence value 1L", factDataRecord.getRegionId(), is(equalTo(1L)));
-    }
-
-    private List<FactData> getFactData() {
-        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        return jdbcTemplate.query("select * from int_test_f_energy_price_demand", ((rs, rowNum) -> FactData.builder().id(rs.getLong(1))
-                .totalDemand(rs.getDouble(2))
-                .rpr(rs.getDouble(3))
-                .regionId(rs.getLong(4))
-                .periodId(rs.getLong(5))
-                .dateTimeId(rs.getLong(6))
-                .build()));
     }
 
 }

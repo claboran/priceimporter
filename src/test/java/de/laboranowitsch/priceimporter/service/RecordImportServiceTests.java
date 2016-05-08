@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,8 +34,8 @@ import static org.hamcrest.Matchers.*;
 public class RecordImportServiceTests {
 
     private static final Logger LOG = LoggerFactory.getLogger(RecordImportServiceTests.class);
-    public static final String TRADE = "TRADE";
-    public static final String PD = "PD";
+    private static final String TRADE = "TRADE";
+    private static final String PD = "PD";
 
     @Autowired
     private DbLoader dbLoader;

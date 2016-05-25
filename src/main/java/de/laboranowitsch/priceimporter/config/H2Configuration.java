@@ -28,7 +28,7 @@ import javax.sql.DataSource;
  * Created by cla on 4/8/16.
  */
 @Configuration
-@Profile(Profiles.INT_TEST_H2)
+@Profile(Profiles.DEV_H2)
 public class H2Configuration implements BatchConfigurer {
 
     @Autowired

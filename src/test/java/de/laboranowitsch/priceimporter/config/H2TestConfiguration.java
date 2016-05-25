@@ -2,8 +2,7 @@ package de.laboranowitsch.priceimporter.config;
 
 import de.laboranowitsch.priceimporter.reader.FlatFileItemReaderFactoryBean;
 import de.laboranowitsch.priceimporter.reader.PriceRecord;
-import de.laboranowitsch.priceimporter.repository.sequence.CustomDataFieldMaxValueIncrementerFactory;
-import de.laboranowitsch.priceimporter.repository.sequence.HanaSequenceGeneratorImpl;
+import de.laboranowitsch.priceimporter.repository.sequence.H2SequenceGeneratorImpl;
 import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import de.laboranowitsch.priceimporter.util.Profiles;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
@@ -22,37 +21,22 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
-import java.sql.Types;
 
 /**
- * Hana Configuration class. Implements the {@link BatchConfigurer} interface
- * SAP Hana database is an unsupported database for Spring Batch, so there is a
- * bunch of configuration needed here.
+ * H2 Configuration class.
  *
  * Created by cla on 4/8/16.
  */
 @Configuration
-@Profile(Profiles.DEV_HANA)
-public class HanaConfiguration implements BatchConfigurer {
+@Profile(Profiles.INT_TEST_H2)
+public class H2TestConfiguration implements BatchConfigurer {
 
     @Autowired
-    private HanaDataBaseConfiguration hanaDataBaseConfiguration;
+    private DataSource dataSource;
 
-    @Bean(destroyMethod = "close")
-    public DataSource dataSource() {
-
-        org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
-
-        ds.setDriverClassName(hanaDataBaseConfiguration.getHanaDriverName());
-        ds.setUrl(hanaDataBaseConfiguration.getHanaUrl());
-        ds.setUsername(hanaDataBaseConfiguration.getHanaUserName());
-        ds.setPassword(hanaDataBaseConfiguration.getHanaPassword());
-        ds.setInitialSize(5);
-        ds.setMaxActive(10);
-        ds.setMaxIdle(5);
-        ds.setMinIdle(2);
-
-        return ds;
+    @Bean
+    public SequenceGenerator sequenceGenerator() {
+        return new H2SequenceGeneratorImpl(dataSource);
     }
 
     @Bean
@@ -63,27 +47,20 @@ public class HanaConfiguration implements BatchConfigurer {
         return flatFileItemReaderFactoryBean.getObject();
     }
 
-    @Bean
-    public SequenceGenerator sequenceGenerator() {
-        return new HanaSequenceGeneratorImpl(dataSource());
-    }
-
     @Override
     public JobRepository getJobRepository() throws Exception {
         JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
-        jobRepositoryFactoryBean.setDatabaseType("HDB"); //JDBC Driver Metadata requests HDB
-        jobRepositoryFactoryBean.setDataSource(dataSource());
+        jobRepositoryFactoryBean.setDatabaseType("H2");
+        jobRepositoryFactoryBean.setDataSource(dataSource);
         jobRepositoryFactoryBean.setTransactionManager(getTransactionManager());
-        jobRepositoryFactoryBean.setIncrementerFactory(new CustomDataFieldMaxValueIncrementerFactory(dataSource()));
         jobRepositoryFactoryBean.setTablePrefix("INT_TEST_BATCH_");
-        jobRepositoryFactoryBean.setClobType(Types.CLOB); //TODO check if need to change to NCLOB
         jobRepositoryFactoryBean.afterPropertiesSet();
         return jobRepositoryFactoryBean.getObject();
     }
 
     @Override
     public PlatformTransactionManager getTransactionManager() throws Exception {
-        return new DataSourceTransactionManager(dataSource());
+        return new DataSourceTransactionManager(dataSource);
     }
 
     @Override
@@ -97,9 +74,8 @@ public class HanaConfiguration implements BatchConfigurer {
     @Override
     public JobExplorer getJobExplorer() throws Exception {
         JobExplorerFactoryBean jobExplorerFactoryBean = new JobExplorerFactoryBean();
-        jobExplorerFactoryBean.setDataSource(dataSource());
+        jobExplorerFactoryBean.setDataSource(dataSource);
         jobExplorerFactoryBean.afterPropertiesSet();
         return jobExplorerFactoryBean.getObject();
     }
-
 }

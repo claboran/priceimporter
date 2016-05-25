@@ -32,8 +32,8 @@ import java.sql.Types;
  * Created by cla on 4/8/16.
  */
 @Configuration
-@Profile(Profiles.DEV_HANA)
-public class HanaConfiguration implements BatchConfigurer {
+@Profile(Profiles.PROD)
+public class ProdConfiguration implements BatchConfigurer {
 
     @Autowired
     private HanaDataBaseConfiguration hanaDataBaseConfiguration;

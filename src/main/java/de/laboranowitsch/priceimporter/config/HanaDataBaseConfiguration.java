@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
+ * Property exporter for Hana database configuration
+ * {@link HanaConfiguration}.
+ *
  * Created by cla on 4/13/16.
  */
 @Profile({Profiles.INT_TEST_HANA})

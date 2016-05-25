@@ -1,0 +1,25 @@
+-- Star Schema for domain model (integration testing)
+-- drop if needed
+drop SEQUENCE if EXISTS dev_region_seq;
+drop SEQUENCE if EXISTS dev_period_type_seq;
+drop SEQUENCE if EXISTS dev_date_time_seq;
+drop SEQUENCE if EXISTS dev_fact_seq;
+
+drop TABLE IF EXISTS dev_f_energy_price_demand;
+drop TABLE IF EXISTS dev_d_region;
+drop TABLE IF EXISTS dev_d_period_type;
+drop TABLE IF EXISTS dev_d_date_time;
+
+-- Spring Batch tables (integration testing)
+-- drop if needed
+
+DROP TABLE  DEV_BATCH_STEP_EXECUTION_CONTEXT IF EXISTS;
+DROP TABLE  DEV_BATCH_JOB_EXECUTION_CONTEXT IF EXISTS;
+DROP TABLE  DEV_BATCH_STEP_EXECUTION IF EXISTS;
+DROP TABLE  DEV_BATCH_JOB_EXECUTION_PARAMS IF EXISTS;
+DROP TABLE  DEV_BATCH_JOB_EXECUTION IF EXISTS;
+DROP TABLE  DEV_BATCH_JOB_INSTANCE IF EXISTS;
+
+DROP SEQUENCE  DEV_BATCH_STEP_EXECUTION_SEQ IF EXISTS;
+DROP SEQUENCE  DEV_BATCH_JOB_EXECUTION_SEQ IF EXISTS;
+DROP SEQUENCE  DEV_BATCH_JOB_SEQ IF EXISTS;

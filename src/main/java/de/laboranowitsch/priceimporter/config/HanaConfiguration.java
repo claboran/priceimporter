@@ -40,7 +40,7 @@ public class HanaConfiguration implements BatchConfigurer {
         jobRepositoryFactoryBean.setTransactionManager(getTransactionManager());
         jobRepositoryFactoryBean.setIncrementerFactory(new CustomDataFieldMaxValueIncrementerFactory(dataSource));
         jobRepositoryFactoryBean.setTablePrefix("INT_TEST_BATCH_");
-        jobRepositoryFactoryBean.setClobType(Types.CLOB); //TODO check if need to change to NCLOB
+        jobRepositoryFactoryBean.setClobType(Types.NCLOB); //TODO check if need to change to NCLOB
         jobRepositoryFactoryBean.afterPropertiesSet();
         return jobRepositoryFactoryBean.getObject();
     }

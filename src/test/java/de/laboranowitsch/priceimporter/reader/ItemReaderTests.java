@@ -29,10 +29,7 @@ public class ItemReaderTests {
 
     @Before
     public void before() throws Exception {
-        FlatFileItemReaderFactoryBean flatFileItemReaderFactoryBean = new FlatFileItemReaderFactoryBean();
-        flatFileItemReaderFactoryBean.setResource("GRAPH_30NSW1.csv");
-        flatFileItemReaderFactoryBean.afterPropertiesSet();
-        itemReader = flatFileItemReaderFactoryBean.getObject();
+        itemReader = PriceRecordFlatFileItemReaderFactory.createReader("GRAPH_30NSW1.csv");
         itemReader.open(new ExecutionContext());
     }
 

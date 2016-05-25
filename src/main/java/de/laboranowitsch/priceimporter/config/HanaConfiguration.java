@@ -1,10 +1,6 @@
 package de.laboranowitsch.priceimporter.config;
 
-import de.laboranowitsch.priceimporter.reader.FlatFileItemReaderFactoryBean;
-import de.laboranowitsch.priceimporter.reader.PriceRecord;
 import de.laboranowitsch.priceimporter.repository.sequence.CustomDataFieldMaxValueIncrementerFactory;
-import de.laboranowitsch.priceimporter.repository.sequence.HanaSequenceGeneratorImpl;
-import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import de.laboranowitsch.priceimporter.util.Profiles;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.explore.JobExplorer;
@@ -13,9 +9,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -36,45 +30,15 @@ import java.sql.Types;
 public class HanaConfiguration implements BatchConfigurer {
 
     @Autowired
-    private HanaDataBaseConfiguration hanaDataBaseConfiguration;
-
-    @Bean(destroyMethod = "close")
-    public DataSource dataSource() {
-
-        org.apache.tomcat.jdbc.pool.DataSource ds = new org.apache.tomcat.jdbc.pool.DataSource();
-
-        ds.setDriverClassName(hanaDataBaseConfiguration.getHanaDriverName());
-        ds.setUrl(hanaDataBaseConfiguration.getHanaUrl());
-        ds.setUsername(hanaDataBaseConfiguration.getHanaUserName());
-        ds.setPassword(hanaDataBaseConfiguration.getHanaPassword());
-        ds.setInitialSize(5);
-        ds.setMaxActive(10);
-        ds.setMaxIdle(5);
-        ds.setMinIdle(2);
-
-        return ds;
-    }
-
-    @Bean
-    public ItemReader<PriceRecord> reader() throws Exception {
-        FlatFileItemReaderFactoryBean flatFileItemReaderFactoryBean = new FlatFileItemReaderFactoryBean();
-        flatFileItemReaderFactoryBean.setResource("GRAPH_30NSW1.csv");
-        flatFileItemReaderFactoryBean.afterPropertiesSet();
-        return flatFileItemReaderFactoryBean.getObject();
-    }
-
-    @Bean
-    public SequenceGenerator sequenceGenerator() {
-        return new HanaSequenceGeneratorImpl(dataSource());
-    }
+    private DataSource dataSource;
 
     @Override
     public JobRepository getJobRepository() throws Exception {
         JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
         jobRepositoryFactoryBean.setDatabaseType("HDB"); //JDBC Driver Metadata requests HDB
-        jobRepositoryFactoryBean.setDataSource(dataSource());
+        jobRepositoryFactoryBean.setDataSource(dataSource);
         jobRepositoryFactoryBean.setTransactionManager(getTransactionManager());
-        jobRepositoryFactoryBean.setIncrementerFactory(new CustomDataFieldMaxValueIncrementerFactory(dataSource()));
+        jobRepositoryFactoryBean.setIncrementerFactory(new CustomDataFieldMaxValueIncrementerFactory(dataSource));
         jobRepositoryFactoryBean.setTablePrefix("INT_TEST_BATCH_");
         jobRepositoryFactoryBean.setClobType(Types.CLOB); //TODO check if need to change to NCLOB
         jobRepositoryFactoryBean.afterPropertiesSet();
@@ -83,7 +47,7 @@ public class HanaConfiguration implements BatchConfigurer {
 
     @Override
     public PlatformTransactionManager getTransactionManager() throws Exception {
-        return new DataSourceTransactionManager(dataSource());
+        return new DataSourceTransactionManager(dataSource);
     }
 
     @Override
@@ -97,7 +61,7 @@ public class HanaConfiguration implements BatchConfigurer {
     @Override
     public JobExplorer getJobExplorer() throws Exception {
         JobExplorerFactoryBean jobExplorerFactoryBean = new JobExplorerFactoryBean();
-        jobExplorerFactoryBean.setDataSource(dataSource());
+        jobExplorerFactoryBean.setDataSource(dataSource);
         jobExplorerFactoryBean.afterPropertiesSet();
         return jobExplorerFactoryBean.getObject();
     }

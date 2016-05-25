@@ -17,5 +17,5 @@ public interface DemandImportJobLauncher {
      *
      * @param fileName
      */
-    void launchDemandImportJob(String fileName) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException;
+    void launchDemandImportJob(String fileName) throws Exception;
 }

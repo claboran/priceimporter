@@ -3,31 +3,30 @@ package de.laboranowitsch.priceimporter.reader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * Created by cla on 3/22/16.
+ * Static factory for creating a {@link PriceRecord} {@link org.springframework.batch.item.file.FlatFileItemReader}.
+ *
+ * Created by cla on 5/26/16.
  */
-public class FlatFileItemReaderFactoryBean extends AbstractFactoryBean<FlatFileItemReader<PriceRecord>> {
+public class PriceRecordFlatFileItemReaderFactory {
 
-
-    private String resource;
-
-    @Override
-    public Class<?> getObjectType() {
-        return FlatFileItemReader.class;
-    }
-
-    @Override
-    protected FlatFileItemReader<PriceRecord> createInstance() throws Exception {
+    /**
+     * Convenience function for creating a {@link FlatFileItemReader}
+     *
+     * @param resource
+     * @return
+     * @throws Exception
+     */
+    public static FlatFileItemReader<PriceRecord> createReader(String resource) throws Exception {
         FlatFileItemReader<PriceRecord> reader = new FlatFileItemReader<>();
         reader.setResource(new ClassPathResource(resource));
         reader.setLineMapper(new DefaultLineMapper<PriceRecord>() {{
             setLineTokenizer(
                     new DelimitedLineTokenizer() {{
-                    setNames(PriceRecord.FIELD_NAMES);
-                }});
+                        setNames(PriceRecord.FIELD_NAMES);
+                    }});
 
             setFieldSetMapper(fieldSet -> PriceRecord.builder().region(fieldSet.readString("REGION"))
                     .settlementDate(fieldSet.readString("SETTLEMENTDATE"))
@@ -43,7 +42,4 @@ public class FlatFileItemReaderFactoryBean extends AbstractFactoryBean<FlatFileI
         return reader;
     }
 
-    public void setResource(String resource) {
-        this.resource = resource;
-    }
 }

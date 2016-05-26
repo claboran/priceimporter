@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -26,10 +27,12 @@ import static org.hamcrest.Matchers.is;
 public class ItemReaderTests {
 
 	private FlatFileItemReader<PriceRecord> itemReader;
+    @Autowired
+    private ItemReaderResourceLoader itemReaderResourceLoader;
 
     @Before
     public void before() throws Exception {
-        itemReader = PriceRecordFlatFileItemReaderFactory.createReader("GRAPH_30NSW1.csv");
+        itemReader = PriceRecordFlatFileItemReaderFactory.createReader(itemReaderResourceLoader.getResourceFromClasspath("classpath:GRAPH_30NSW1.csv"));
         itemReader.open(new ExecutionContext());
     }
 

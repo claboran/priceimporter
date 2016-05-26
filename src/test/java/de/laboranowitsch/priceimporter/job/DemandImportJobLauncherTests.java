@@ -55,7 +55,7 @@ public class DemandImportJobLauncherTests {
 
     @Test
     public void testJobRun() throws Exception {
-        demandImportJobLauncher.launchDemandImportJob("GRAPH_30NSW1.csv");
+        demandImportJobLauncher.launchDemandImportJob("classpath:GRAPH_30NSW1.csv");
         assertThat("Importer job has the right number of elements", FactDataRecordHelper.getFactData(dataSource).size(), is(equalTo(96)));
     }
 

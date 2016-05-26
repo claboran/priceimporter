@@ -4,6 +4,7 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 /**
  * Static factory for creating a {@link PriceRecord} {@link org.springframework.batch.item.file.FlatFileItemReader}.
@@ -15,13 +16,13 @@ public class PriceRecordFlatFileItemReaderFactory {
     /**
      * Convenience function for creating a {@link FlatFileItemReader}
      *
-     * @param resource
-     * @return
+     * @param resource could be taken from {@link ItemReaderResourceLoader}
+     * @return {@link FlatFileItemReader}
      * @throws Exception
      */
-    public static FlatFileItemReader<PriceRecord> createReader(String resource) throws Exception {
+    public static FlatFileItemReader<PriceRecord> createReader(Resource resource) throws Exception {
         FlatFileItemReader<PriceRecord> reader = new FlatFileItemReader<>();
-        reader.setResource(new ClassPathResource(resource));
+        reader.setResource(resource);
         reader.setLineMapper(new DefaultLineMapper<PriceRecord>() {{
             setLineTokenizer(
                     new DelimitedLineTokenizer() {{

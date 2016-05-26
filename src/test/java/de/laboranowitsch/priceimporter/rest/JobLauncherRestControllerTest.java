@@ -3,9 +3,14 @@ package de.laboranowitsch.priceimporter.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.laboranowitsch.priceimporter.PriceImporterApplication;
+import de.laboranowitsch.priceimporter.launcher.DemandImportJobLauncher;
+import de.laboranowitsch.priceimporter.reader.ItemReaderResourceLoader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +44,25 @@ public class JobLauncherRestControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @Autowired
+    private ItemReaderResourceLoader itemReaderResourceLoader;
+
+    @Mock
+    private DemandImportJobLauncher demandImportJobLauncherMock;
+    @InjectMocks
+    private JobLauncherRestController jobLauncherRestController;/* = new JobLauncherRestController();*/
+
     @Before
     public void setUp() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        MockitoAnnotations.initMocks(this);
+//        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        jobLauncherRestController.setItemReaderResourceLoader(itemReaderResourceLoader);
+        mockMvc = MockMvcBuilders.standaloneSetup(jobLauncherRestController).build();
     }
 
     @Test
     public void testSendList() throws Exception {
-        this.mockMvc.perform(post("/api/launch")
+        mockMvc.perform(post("/api/launch")
                 .content(jsonContentAsString())
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))

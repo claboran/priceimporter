@@ -34,15 +34,7 @@ public class HanaConfiguration implements BatchConfigurer {
 
     @Override
     public JobRepository getJobRepository() throws Exception {
-        JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
-        jobRepositoryFactoryBean.setDatabaseType("HDB"); //JDBC Driver Metadata requests HDB
-        jobRepositoryFactoryBean.setDataSource(dataSource);
-        jobRepositoryFactoryBean.setTransactionManager(getTransactionManager());
-        jobRepositoryFactoryBean.setIncrementerFactory(new CustomDataFieldMaxValueIncrementerFactory(dataSource));
-        jobRepositoryFactoryBean.setTablePrefix("INT_TEST_BATCH_");
-        jobRepositoryFactoryBean.setClobType(Types.NCLOB); //TODO check if need to change to NCLOB
-        jobRepositoryFactoryBean.afterPropertiesSet();
-        return jobRepositoryFactoryBean.getObject();
+        return HanaBatchConfigurationHelper.createJobRepository(dataSource, getTransactionManager(), "DEV_BATCH_");
     }
 
     @Override

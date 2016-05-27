@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
@@ -67,7 +68,7 @@ public class JobLauncherRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        Mockito.verifyZeroInteractions(demandImportJobLauncherMock);
+        verifyZeroInteractions(demandImportJobLauncherMock);
     }
 
     @Test
@@ -77,7 +78,7 @@ public class JobLauncherRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        Mockito.verify(demandImportJobLauncherMock).launchDemandImportJob("file:src/test/resources/testinput/file-does-exist-1.csv");
+        verify(demandImportJobLauncherMock).launchDemandImportJob("file:src/test/resources/testinput/file-does-exist-1.csv");
     }
 
     @Test
@@ -87,7 +88,7 @@ public class JobLauncherRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        Mockito.verify(demandImportJobLauncherMock, Mockito.times(2)).launchDemandImportJob(Mockito.anyString());
+        verify(demandImportJobLauncherMock, times(2)).launchDemandImportJob(anyString());
     }
 
     private String jsonContentAsString(List<String> files) throws JsonProcessingException {

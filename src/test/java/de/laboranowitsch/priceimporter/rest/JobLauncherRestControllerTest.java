@@ -10,19 +10,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)
 @WebAppConfiguration
+@TestPropertySource(properties = {"priceimporter.batch.uploaddirectory=src/test/resources/testinput"})
 public class JobLauncherRestControllerTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobLauncherRestControllerTest.class);
@@ -42,36 +45,54 @@ public class JobLauncherRestControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private WebApplicationContext webApplicationContext;
-
-    @Autowired
     private ItemReaderResourceLoader itemReaderResourceLoader;
 
     @Mock
     private DemandImportJobLauncher demandImportJobLauncherMock;
+
     @InjectMocks
-    private JobLauncherRestController jobLauncherRestController;/* = new JobLauncherRestController();*/
+    private JobLauncherRestController jobLauncherRestController;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-//        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
         jobLauncherRestController.setItemReaderResourceLoader(itemReaderResourceLoader);
         mockMvc = MockMvcBuilders.standaloneSetup(jobLauncherRestController).build();
     }
 
     @Test
-    public void testSendList() throws Exception {
+    public void testFileNamesDoNotExist() throws Exception {
         mockMvc.perform(post("/api/launch")
-                .content(jsonContentAsString())
+                .content(jsonContentAsString(Arrays.asList("is_not_present-1", "is_not_present-2")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+        Mockito.verifyZeroInteractions(demandImportJobLauncherMock);
     }
 
-    private String jsonContentAsString() throws JsonProcessingException {
+    @Test
+    public void testFileNamesDoExist() throws Exception {
+        mockMvc.perform(post("/api/launch")
+                .content(jsonContentAsString(Arrays.asList("file-does-exist-1.csv")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        Mockito.verify(demandImportJobLauncherMock).launchDemandImportJob("file:src/test/resources/testinput/file-does-exist-1.csv");
+    }
+
+    @Test
+    public void testFileNamesExistAndNonExist() throws Exception {
+        mockMvc.perform(post("/api/launch")
+                .content(jsonContentAsString(Arrays.asList("file-does-exist-1.csv", "file-does-exist-1.csv", "is_not_present-1", "is_not_present-2")))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        Mockito.verify(demandImportJobLauncherMock, Mockito.times(2)).launchDemandImportJob(Mockito.anyString());
+    }
+
+    private String jsonContentAsString(List<String> files) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        String json = objectMapper.writeValueAsString(Arrays.asList("Hello", "World"));
+        String json = objectMapper.writeValueAsString(files);
         LOGGER.info("Json array: {}", json);
         return json;
     }

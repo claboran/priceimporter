@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 /**
  * Hana {@link SequenceGenerator} implementation.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 public class HanaSequenceGeneratorImpl implements SequenceGenerator {
 

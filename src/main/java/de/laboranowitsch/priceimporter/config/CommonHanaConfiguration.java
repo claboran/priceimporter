@@ -19,6 +19,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.Types;
 
 /**
@@ -26,7 +27,7 @@ import java.sql.Types;
  * SAP Hana database is an unsupported database for Spring Batch, so there is a
  * bunch of configuration needed here.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Configuration
 @Profile({Profiles.DEV_HANA, Profiles.INT_TEST_HANA, Profiles.PROD})
@@ -44,6 +45,7 @@ public class CommonHanaConfiguration {
         ds.setUrl(hanaDataBaseConfiguration.getHanaUrl());
         ds.setUsername(hanaDataBaseConfiguration.getHanaUserName());
         ds.setPassword(hanaDataBaseConfiguration.getHanaPassword());
+        ds.setDefaultTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         ds.setInitialSize(5);
         ds.setMaxActive(10);
         ds.setMaxIdle(5);

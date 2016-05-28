@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  *
  * Created by cla on 4/13/16.
  */
-@Profile({Profiles.INT_TEST_HANA})
+@Profile({Profiles.INT_TEST_HANA, Profiles.DEV_HANA, Profiles.PROD})
 @Component
 public class HanaDataBaseConfiguration {
 

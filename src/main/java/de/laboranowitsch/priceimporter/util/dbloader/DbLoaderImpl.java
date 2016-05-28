@@ -27,20 +27,25 @@ public class DbLoaderImpl implements DbLoader {
     private final String createScriptName;
     private final String dropScriptName;
     private final DataSource dataSource;
+    private final boolean runScripts;
 
     @Autowired
     public DbLoaderImpl(@Value("${priceimporter.create.script}") final String createScriptName,
                         @Value("${priceimporter.drop.script}") final String dropScriptName,
+                        @Value("${priceimporter.run.script}") final boolean runScripts,
                         final DataSource dataSource) {
         this.createScriptName = createScriptName;
         this.dropScriptName = dropScriptName;
+        this.runScripts = runScripts;
         this.dataSource = dataSource;
     }
 
     @Override
     public void prepareDatabase() {
-        executeDropScript();
-        executeCreateScript();
+        if(runScripts) {
+            executeDropScript();
+            executeCreateScript();
+        }
     }
 
     private void executeDropScript() {

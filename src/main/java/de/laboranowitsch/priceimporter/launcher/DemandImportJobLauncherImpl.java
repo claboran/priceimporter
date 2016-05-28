@@ -61,7 +61,7 @@ public class DemandImportJobLauncherImpl implements DemandImportJobLauncher {
     private Job createDemandImportJob(Resource resource) throws Exception {
         return jobBuilderFactory.get("demandDataImportJob-"+ resource.getFilename() +"-"+ LocalDateTime.now().toString())
                 .incrementer(new RunIdIncrementer())
-                .flow(stepBuilderFactory.get("step1")
+                .flow(stepBuilderFactory.get("priceimporter-step")
                         .<PriceRecord, CompositeRecord> chunk(chunkSize)
                         .reader(PriceRecordFlatFileItemReaderFactory.createReader(resource))
                         .processor(itemProcessor)

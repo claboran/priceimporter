@@ -3,6 +3,7 @@ package de.laboranowitsch.priceimporter.config;
 import de.laboranowitsch.priceimporter.repository.sequence.H2SequenceGeneratorImpl;
 import de.laboranowitsch.priceimporter.repository.sequence.SequenceGenerator;
 import de.laboranowitsch.priceimporter.util.Profiles;
+import org.h2.tools.Server;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
@@ -11,13 +12,18 @@ import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.sql.SQLException;
 
 /**
  * H2 Configuration class.
@@ -28,6 +34,9 @@ import javax.sql.DataSource;
 @Profile(Profiles.DEV_H2)
 public class H2Configuration implements BatchConfigurer {
 
+    @Value("${h2.tcp.port:9092}")
+    private String h2TcpPort;
+
     @Autowired
     private DataSource dataSource;
 
@@ -36,6 +45,16 @@ public class H2Configuration implements BatchConfigurer {
         return new H2SequenceGeneratorImpl(dataSource);
     }
 
+    @Bean
+    @ConditionalOnExpression("${h2.tcp.enabled:false}")
+    public Server h2TcpServer() throws SQLException {
+        return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", h2TcpPort).start();
+    }
+
+    @Bean
+    public TaskExecutor taskExecutor() {
+        return new SimpleAsyncTaskExecutor();
+    }
 
     @Override
     public JobRepository getJobRepository() throws Exception {
@@ -43,7 +62,7 @@ public class H2Configuration implements BatchConfigurer {
         jobRepositoryFactoryBean.setDatabaseType("H2");
         jobRepositoryFactoryBean.setDataSource(dataSource);
         jobRepositoryFactoryBean.setTransactionManager(getTransactionManager());
-        jobRepositoryFactoryBean.setTablePrefix("INT_TEST_BATCH_");
+        jobRepositoryFactoryBean.setTablePrefix("DEV_BATCH_");
         jobRepositoryFactoryBean.afterPropertiesSet();
         return jobRepositoryFactoryBean.getObject();
     }
@@ -55,8 +74,9 @@ public class H2Configuration implements BatchConfigurer {
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher(); //TODO check if need to change to async operation here
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(getJobRepository());
+        jobLauncher.setTaskExecutor(taskExecutor());
         jobLauncher.afterPropertiesSet();
         return jobLauncher;
     }

@@ -29,9 +29,9 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 /**
- * Integration test for {@link JobLauncherRestController}
+ * Integration test for {@link JobLauncherRestController}.
  *
- * Created by cla on 5/25/16.
+ * @author christian@laboranowitsch.de
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)

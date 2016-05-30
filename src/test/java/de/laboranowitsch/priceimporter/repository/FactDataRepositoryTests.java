@@ -26,9 +26,9 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Tests for {@link FactDataRepository} and {@link SequenceGenerator}
- * for {@link de.laboranowitsch.priceimporter.domain.FactData} Sequence
+ * for {@link de.laboranowitsch.priceimporter.domain.FactData} Sequence.
  *
- * Created by cla on 4/27/16.
+ * @author christian@laboranowitsch.de
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)

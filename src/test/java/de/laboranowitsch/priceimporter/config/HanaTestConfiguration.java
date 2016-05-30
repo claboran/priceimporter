@@ -23,7 +23,7 @@ import java.sql.Types;
  * SAP Hana database is an unsupported database for Spring Batch, so there is a
  * bunch of configuration needed here.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Configuration
 @Profile(Profiles.INT_TEST_HANA)
@@ -46,7 +46,7 @@ public class HanaTestConfiguration implements BatchConfigurer {
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher(); //TODO check if need to change to async operation here
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(getJobRepository());
         jobLauncher.afterPropertiesSet();
         return jobLauncher;

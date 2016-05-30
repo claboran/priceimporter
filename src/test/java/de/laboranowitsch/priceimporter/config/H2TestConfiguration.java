@@ -20,9 +20,9 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * H2 Configuration class.
+ * H2 Configuration class for integration-tests.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Configuration
 @Profile(Profiles.INT_TEST_H2)
@@ -54,7 +54,7 @@ public class H2TestConfiguration implements BatchConfigurer {
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher(); //TODO check if need to change to async operation here
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(getJobRepository());
         jobLauncher.afterPropertiesSet();
         return jobLauncher;

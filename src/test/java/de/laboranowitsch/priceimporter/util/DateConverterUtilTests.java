@@ -9,13 +9,10 @@ import static org.hamcrest.Matchers.*;
 /**
  * Testing of {@link DateConverterUtil} utility.
  *
- * Created by cla on 4/9/16.
+ * @author christian@laboranowitsch.de
  */
 public class DateConverterUtilTests {
 
-    /**
-     * Test conversion from String to ZoneDateTime
-     */
     @Test
     public void testConversionString2ZoneDateTime() {
         ZonedDateTime dateTime = DateConverterUtil.convertString2ZoneDateTime("2016/03/22 04:30:00");

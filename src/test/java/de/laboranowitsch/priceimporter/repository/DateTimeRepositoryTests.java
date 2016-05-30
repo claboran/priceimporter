@@ -21,9 +21,9 @@ import static org.hamcrest.Matchers.*;
 
 /**
  * Tests for {@link DateTimeRepository} and {@link SequenceGenerator}
- * for {@link de.laboranowitsch.priceimporter.domain.DateTime} Sequence
+ * for {@link de.laboranowitsch.priceimporter.domain.DateTime} Sequence.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)

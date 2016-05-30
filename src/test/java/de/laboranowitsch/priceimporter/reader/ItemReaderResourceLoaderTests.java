@@ -15,7 +15,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Testing of {@link ItemReaderResourceLoader}
+ * Testing of {@link ItemReaderResourceLoader}.
+ *
+ * @author christian@laboranowitsch.de
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)

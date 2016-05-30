@@ -5,7 +5,7 @@ import de.laboranowitsch.priceimporter.domain.*;
 /**
  * Helper class to create {@link de.laboranowitsch.priceimporter.domain.CompositeRecord}.
  *
- * Created by cla on 5/6/16.
+ * @author christian@laboranowitsch.de
  */
 public class CompositeRecordHelper {
 

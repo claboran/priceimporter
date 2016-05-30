@@ -27,9 +27,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Tests for Spring Batch {@link ItemWriter}
+ * Tests for Spring Batch {@link ItemWriter}.
  *
- * Created by cla on 5/06/16.
+ * @author christian@laboranowitsch.de
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PriceImporterApplication.class)

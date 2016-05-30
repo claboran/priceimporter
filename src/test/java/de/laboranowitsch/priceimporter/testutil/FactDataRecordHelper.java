@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Reads {@link de.laboranowitsch.priceimporter.domain.FactData} for test purpose.
  *
- * Created by cla on 5/8/16.
+ * @author christian@laboranowitsch.de
  */
 public class FactDataRecordHelper {
 

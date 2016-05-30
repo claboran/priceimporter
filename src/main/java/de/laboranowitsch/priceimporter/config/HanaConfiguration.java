@@ -35,6 +35,11 @@ public class HanaConfiguration implements BatchConfigurer {
     @Autowired
     private DataSource dataSource;
 
+    @Bean
+    public TaskExecutor taskExecutor() {
+        return new SimpleAsyncTaskExecutor();
+    }
+
     @Override
     public JobRepository getJobRepository() throws Exception {
         return HanaBatchConfigurationHelper.createJobRepository(dataSource, getTransactionManager(), "DEV_BATCH_");
@@ -48,10 +53,7 @@ public class HanaConfiguration implements BatchConfigurer {
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
-        jobLauncher.setJobRepository(getJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
+        return HanaBatchConfigurationHelper.createJobLauncher(taskExecutor(), getJobRepository());
     }
 
     @Override

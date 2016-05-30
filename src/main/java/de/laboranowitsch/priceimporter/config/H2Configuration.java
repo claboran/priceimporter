@@ -51,6 +51,11 @@ public class H2Configuration implements BatchConfigurer {
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", h2TcpPort).start();
     }
 
+    @Bean
+    public TaskExecutor taskExecutor() {
+        return new SimpleAsyncTaskExecutor();
+    }
+
     @Override
     public JobRepository getJobRepository() throws Exception {
         JobRepositoryFactoryBean jobRepositoryFactoryBean = new JobRepositoryFactoryBean();
@@ -71,6 +76,7 @@ public class H2Configuration implements BatchConfigurer {
     public JobLauncher getJobLauncher() throws Exception {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher(); //TODO check if need to change to async operation here
         jobLauncher.setJobRepository(getJobRepository());
+        jobLauncher.setTaskExecutor(taskExecutor());
         jobLauncher.afterPropertiesSet();
         return jobLauncher;
     }

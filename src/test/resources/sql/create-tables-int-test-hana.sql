@@ -6,6 +6,7 @@ create COLUMN TABLE int_test_d_region (
   id BIGINT PRIMARY KEY NOT NULL,
   region NVARCHAR(50)
 );
+alter table int_test_d_region add CONSTRAINT int_test_region_un UNIQUE (region);
 
 -- PeriodType dimension
 
@@ -15,6 +16,7 @@ create COLUMN TABLE int_test_d_period_type (
   id BIGINT PRIMARY KEY NOT NULL,
   period_type NVARCHAR(50)
 );
+alter table int_test_d_period_type add CONSTRAINT int_test_period_un UNIQUE (period_type);
 
 -- Time date dimension
 
@@ -28,6 +30,7 @@ create COLUMN TABLE int_test_d_date_time (
   hour_of_day INTEGER,
   minutes_of_hour INTEGER
 );
+alter table int_test_d_date_time add CONSTRAINT int_test_date_time_un UNIQUE (day_of_month, month_of_year, the_year, hour_of_day, minutes_of_hour);
 
 -- Fact table
 

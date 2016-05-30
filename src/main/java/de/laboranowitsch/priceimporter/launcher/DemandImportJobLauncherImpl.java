@@ -15,6 +15,8 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -63,6 +65,12 @@ public class DemandImportJobLauncherImpl implements DemandImportJobLauncher {
                 .incrementer(new RunIdIncrementer())
                 .flow(stepBuilderFactory.get("priceimporter-step")
                         .<PriceRecord, CompositeRecord> chunk(chunkSize)
+                        .faultTolerant()
+                        .retry(DuplicateKeyException.class) //Retry on DuplikateKey for H2
+                        .retry(DataIntegrityViolationException.class) // Retry on DataIntegrityViolationException for HANA
+                        .skip(DuplicateKeyException.class)
+                        .skip(DataIntegrityViolationException.class)
+                        .retryLimit(5)
                         .reader(PriceRecordFlatFileItemReaderFactory.createReader(resource))
                         .processor(itemProcessor)
                         .writer(itemWriter)

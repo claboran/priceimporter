@@ -1,8 +1,11 @@
 package de.laboranowitsch.priceimporter.config;
 
 import de.laboranowitsch.priceimporter.repository.sequence.CustomDataFieldMaxValueIncrementerFactory;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -39,6 +42,15 @@ public class HanaBatchConfigurationHelper {
         jobRepositoryFactoryBean.setClobType(Types.NCLOB);
         jobRepositoryFactoryBean.afterPropertiesSet();
         return jobRepositoryFactoryBean.getObject();
+
+    }
+
+    public static JobLauncher createJobLauncher(TaskExecutor taskExecutor, JobRepository jobRepository) throws Exception {
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+        jobLauncher.setJobRepository(jobRepository);
+        jobLauncher.setTaskExecutor(taskExecutor);
+        jobLauncher.afterPropertiesSet();
+        return jobLauncher;
 
     }
 }

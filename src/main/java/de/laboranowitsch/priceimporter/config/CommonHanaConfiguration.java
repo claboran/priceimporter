@@ -45,7 +45,6 @@ public class CommonHanaConfiguration {
         ds.setUrl(hanaDataBaseConfiguration.getHanaUrl());
         ds.setUsername(hanaDataBaseConfiguration.getHanaUserName());
         ds.setPassword(hanaDataBaseConfiguration.getHanaPassword());
-        ds.setDefaultTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
         ds.setInitialSize(5);
         ds.setMaxActive(10);
         ds.setMaxIdle(5);

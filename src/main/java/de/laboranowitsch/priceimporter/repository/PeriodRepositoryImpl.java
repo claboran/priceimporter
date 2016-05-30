@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Repository implementing {@link PeriodRepository} for dealing with {@link Period}s.
  *
- * Created by cla on 4/24/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class PeriodRepositoryImpl implements PeriodRepository{

@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Repository implementing {@link RegionRepository} for dealing with {@link Region}s.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class RegionRepositoryImpl implements RegionRepository {

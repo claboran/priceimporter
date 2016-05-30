@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 /**
  * Implementation class for {@link RecordImportService}.
  *
- * Created by cla on 5/1/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class RecordImportServiceImpl implements RecordImportService {

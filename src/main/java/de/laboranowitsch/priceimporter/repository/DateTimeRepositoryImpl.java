@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Repository implementing {@link DateTimeRepository} for dealing with {@link DateTime}s.
  *
- * Created by cla on 4/24/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class DateTimeRepositoryImpl implements DateTimeRepository {

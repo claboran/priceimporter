@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Repository implementing {@link FactDataRepository} for dealing with {@link FactData}s.
  *
- * Created by cla on 4/24/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class FactDataRepositoryImpl implements FactDataRepository {

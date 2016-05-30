@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * RestController for submitting import files to the launcher.
  *
- * Created by cla on 5/25/16.
+ * @author christian@laboranowitsch.de
  */
 @RestController
 @RequestMapping("/api")
@@ -33,6 +33,13 @@ public class JobLauncherRestController {
     @Autowired
     private DemandImportJobLauncher demandImportJobLauncher;
 
+    /**
+     * Main entry for POST request launching Spring Batch Jobs.
+     *
+     * @param files
+     * @return nothing due to the fact that batch-operations are non blocking and will be supervised
+     * by Spring-Batch tables
+     */
     @RequestMapping(value = "/launch", method = RequestMethod.POST)
     public ResponseEntity<Void> launchJobs(@RequestBody List<String> files) {
         //Prepare file names

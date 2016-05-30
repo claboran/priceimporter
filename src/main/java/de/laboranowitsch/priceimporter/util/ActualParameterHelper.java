@@ -3,15 +3,15 @@ package de.laboranowitsch.priceimporter.util;
 /**
  * Helper class for adding column to NamedParameters.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 public class ActualParameterHelper {
 
     /**
-     * Adds a column to the parameter
+     * Adds a colon to the parameter.
      *
      * @param parameter
-     * @return :parameter
+     * @return parameter with colon
      */
     public static String makeActualParameterOf(String parameter) {
         return ":" + parameter;

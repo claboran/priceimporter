@@ -8,12 +8,12 @@ import de.laboranowitsch.priceimporter.domain.CompositeRecord;
  * {@link de.laboranowitsch.priceimporter.domain.Region}
  * and facts {@link de.laboranowitsch.priceimporter.domain.FactData}.
  *
- * Created by cla on 5/1/16.
+ * @author christian@laboranowitsch.de
  */
 public interface RecordImportService {
 
     /**
-     * Imports a complete record
+     * Imports a complete record. {@link CompositeRecord} . See {@link de.laboranowitsch.priceimporter.BatchConfiguration}.
      *
      * @param compositeRecord
      */

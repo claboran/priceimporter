@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /**
- * Property exporter for Hana database configuration
- * {@link HanaConfiguration}.
+ * Property exporter for Hana {@link javax.sql.DataSource} configuration
+ * {@link CommonHanaConfiguration}.
  *
- * Created by cla on 4/13/16.
+ * @author christian@laboranowitsch.de
  */
 @Profile({Profiles.INT_TEST_HANA, Profiles.DEV_HANA, Profiles.PROD})
 @Component

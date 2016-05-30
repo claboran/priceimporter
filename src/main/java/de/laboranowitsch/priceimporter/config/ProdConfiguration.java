@@ -10,8 +10,11 @@ import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -21,9 +24,9 @@ import java.sql.Types;
 /**
  * Hana Configuration class. Implements the {@link BatchConfigurer} interface
  * SAP Hana database is an unsupported database for Spring Batch, so there is a
- * bunch of configuration needed here.
+ * special configuration needed here. See also {@link HanaBatchConfigurationHelper}.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Configuration
 @Profile(Profiles.PROD)
@@ -32,6 +35,10 @@ public class ProdConfiguration implements BatchConfigurer {
     @Autowired
     private DataSource dataSource;
 
+    @Bean
+    public TaskExecutor taskExecutor() {
+        return new SimpleAsyncTaskExecutor();
+    }
 
     @Override
     public JobRepository getJobRepository() throws Exception {
@@ -45,10 +52,7 @@ public class ProdConfiguration implements BatchConfigurer {
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher(); //TODO check if need to change to async operation here
-        jobLauncher.setJobRepository(getJobRepository());
-        jobLauncher.afterPropertiesSet();
-        return jobLauncher;
+        return HanaBatchConfigurationHelper.createJobLauncher(taskExecutor(), getJobRepository());
     }
 
     @Override

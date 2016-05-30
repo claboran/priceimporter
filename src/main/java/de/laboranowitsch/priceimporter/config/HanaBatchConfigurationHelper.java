@@ -16,16 +16,17 @@ import java.sql.Types;
  * Helper class for common preparation of SAP Hana
  * {@link org.springframework.batch.core.configuration.annotation.BatchConfigurer} components.
  *
- * Created by cla on 5/26/16.
+ * @author christian@laboranowitsch.de
  */
 public class HanaBatchConfigurationHelper {
 
     /**
-     * Creates a HANA {@link JobRepository}
+     * Creates a HANA {@link JobRepository}. Configuration of a non-supported database type like SAP Hana to be
+     * handled by Spring-Batch.
      *
      * @param dataSource
      * @param platformTransactionManager
-     * @param batchTablePrefix
+     * @param batchTablePrefix according to the selected {@link de.laboranowitsch.priceimporter.util.Profiles}
      * @return finished {@link JobRepository}
      * @throws Exception
      */
@@ -45,6 +46,13 @@ public class HanaBatchConfigurationHelper {
 
     }
 
+    /**
+     * Creates an {@link JobLauncher} for SAP Hana configuration.
+     * @param taskExecutor
+     * @param jobRepository
+     * @return finished {@link JobLauncher}
+     * @throws Exception
+     */
     public static JobLauncher createJobLauncher(TaskExecutor taskExecutor, JobRepository jobRepository) throws Exception {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(jobRepository);

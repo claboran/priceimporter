@@ -24,9 +24,9 @@ import java.sql.Types;
 /**
  * Hana Configuration class. Implements the {@link BatchConfigurer} interface
  * SAP Hana database is an unsupported database for Spring Batch, so there is a
- * bunch of configuration needed here.
+ * special configuration needed here. See also {@link HanaBatchConfigurationHelper}.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Configuration
 @Profile(Profiles.DEV_HANA)

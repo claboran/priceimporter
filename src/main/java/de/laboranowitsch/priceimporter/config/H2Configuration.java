@@ -26,16 +26,16 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
- * H2 Configuration class.
+ * H2 Batch Configuration class only for H2 server profile see {@link Profiles}.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 @Configuration
 @Profile(Profiles.DEV_H2)
 public class H2Configuration implements BatchConfigurer {
 
     @Value("${h2.tcp.port:9092}")
-    private String h2TcpPort;
+    private String h2TcpPort;  // Access to H2 database for analyzing data
 
     @Autowired
     private DataSource dataSource;
@@ -45,12 +45,23 @@ public class H2Configuration implements BatchConfigurer {
         return new H2SequenceGeneratorImpl(dataSource);
     }
 
+    /**
+     * Starts the H2 TCP server for accessing of the H2 server.
+     *
+     * @return {@link Server}
+     * @throws SQLException
+     */
     @Bean
-    @ConditionalOnExpression("${h2.tcp.enabled:false}")
+    @ConditionalOnExpression("${h2.tcp.enabled:false}") //default is disabled
     public Server h2TcpServer() throws SQLException {
         return Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", h2TcpPort).start();
     }
 
+    /**
+     * Creates an AsynTaskExecutor for running Batch-Jobs in parallel.
+     *
+     * @return {@link TaskExecutor}
+     */
     @Bean
     public TaskExecutor taskExecutor() {
         return new SimpleAsyncTaskExecutor();
@@ -74,7 +85,7 @@ public class H2Configuration implements BatchConfigurer {
 
     @Override
     public JobLauncher getJobLauncher() throws Exception {
-        SimpleJobLauncher jobLauncher = new SimpleJobLauncher(); //TODO check if need to change to async operation here
+        SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(getJobRepository());
         jobLauncher.setTaskExecutor(taskExecutor());
         jobLauncher.afterPropertiesSet();

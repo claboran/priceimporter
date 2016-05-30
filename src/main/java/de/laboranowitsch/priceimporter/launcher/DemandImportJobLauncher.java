@@ -1,14 +1,9 @@
 package de.laboranowitsch.priceimporter.launcher;
 
-import org.springframework.batch.core.JobParametersInvalidException;
-import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
-import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
-import org.springframework.batch.core.repository.JobRestartException;
-
 /**
- * Encapsulates creation and execution of DemandImportJobs.
+ * Responsible service for creation and execution of DemandImportJobs.
  *
- * Created by cla on 5/7/16.
+ * @author christian@laboranowitsch.de
  */
 public interface DemandImportJobLauncher {
 

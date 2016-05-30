@@ -5,12 +5,15 @@ import de.laboranowitsch.priceimporter.util.DateConverterUtil;
 import java.time.ZonedDateTime;
 
 /**
- * Representing a row in import CSV format.
+ * Representing a row in the CSV format.
  *
- * Created by cla on 3/22/16.
+ * @author christian@laboranowitsch.de
  */
 public class PriceRecord {
 
+    /**
+     * Common FIELD_NAMES for the Reader
+     */
     public static final String[] FIELD_NAMES = {"REGION", "SETTLEMENTDATE", "TOTALDEMAND", "RRP", "PERIODTYPE"};
 
     private String region;

@@ -3,7 +3,7 @@ package de.laboranowitsch.priceimporter.domain;
 /**
  * FactData encapsulates the facts and the foreign keys of all dimensions.
  *
- * Created by cla on 4/27/16.
+ * @author christian@laboranowitsch.de
  */
 public class FactData {
 

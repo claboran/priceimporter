@@ -3,7 +3,7 @@ package de.laboranowitsch.priceimporter.domain;
 /**
  * Domain class representing the DateTime dimension.
  *
- * Created by cla on 4/24/16.
+ * @author christian@laboranowitsch.de
  */
 public class DateTime {
 

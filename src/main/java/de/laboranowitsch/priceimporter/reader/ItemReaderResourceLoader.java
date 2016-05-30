@@ -5,21 +5,21 @@ import org.springframework.core.io.Resource;
 /**
  * Component for loading ItemReader resources via Springs {@link org.springframework.core.io.ResourceLoader}.
  *
- * Created by cla on 5/26/16.
+ * @author christian@laboranowitsch.de
  */
 public interface ItemReaderResourceLoader {
 
     /**
-     * Retrieves a resource from classpath
+     * Retrieves a resource from classpath or filepath.
      *
-     * @param fileName
+     * @param fileName prefixed with classpath: or file:
      * @return {@link Resource}
      */
     Resource getResourceFromClasspath(String fileName);
 
 
     /**
-     * Gets the upload directory path
+     * Gets the configured upload directory.
      *
      * @return upload directory
      */

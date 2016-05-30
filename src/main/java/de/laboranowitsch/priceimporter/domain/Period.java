@@ -1,9 +1,9 @@
 package de.laboranowitsch.priceimporter.domain;
 
 /**
- * Period dimension.
+ * Domain class representing the Period dimension.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 public class Period {
 

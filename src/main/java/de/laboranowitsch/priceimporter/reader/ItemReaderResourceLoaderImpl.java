@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 
 /**
  * Implementation class for {@link ItemReaderResourceLoader}.
+ * The {@link ResourceLoader} gets injected by Spring automatically {@link ResourceLoaderAware}.
  *
- * Created by cla on 5/26/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class ItemReaderResourceLoaderImpl implements ItemReaderResourceLoader, ResourceLoaderAware {

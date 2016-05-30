@@ -1,9 +1,9 @@
 package de.laboranowitsch.priceimporter.domain;
 
 /**
- * Region dimension.
+ * Domain class representing the Region dimension.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 public class Region {
 

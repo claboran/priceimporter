@@ -3,18 +3,17 @@ package de.laboranowitsch.priceimporter.reader;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 /**
  * Static factory for creating a {@link PriceRecord} {@link org.springframework.batch.item.file.FlatFileItemReader}.
  *
- * Created by cla on 5/26/16.
+ * @author christian@laboranowitsch.de
  */
 public class PriceRecordFlatFileItemReaderFactory {
 
     /**
-     * Convenience function for creating a {@link FlatFileItemReader}
+     * Convenience function for creating a {@link FlatFileItemReader}.
      *
      * @param resource could be taken from {@link ItemReaderResourceLoader}
      * @return {@link FlatFileItemReader}
@@ -37,7 +36,7 @@ public class PriceRecordFlatFileItemReaderFactory {
                     .build());
         }});
 
-        reader.setLinesToSkip(1);
+        reader.setLinesToSkip(1); //Skip Header ror
         reader.afterPropertiesSet();
 
         return reader;

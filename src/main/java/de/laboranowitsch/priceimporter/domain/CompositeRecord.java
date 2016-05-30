@@ -3,7 +3,7 @@ package de.laboranowitsch.priceimporter.domain;
 /**
  * Encapsulates a complete record transformed by the {@link org.springframework.batch.item.ItemProcessor}.
  *
- * Created by cla on 5/1/16.
+ * @author christian@laboranowitsch.de
  */
 public class CompositeRecord {
 

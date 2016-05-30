@@ -5,6 +5,7 @@ import de.laboranowitsch.priceimporter.reader.ItemReaderResourceLoader;
 import de.laboranowitsch.priceimporter.reader.PriceRecord;
 import de.laboranowitsch.priceimporter.reader.PriceRecordFlatFileItemReaderFactory;
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
@@ -20,11 +21,15 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Implementation class of {@link DemandImportJobLauncher}.
  *
- * Created by cla on 5/7/16.
+ * @author christian@laboranowitsch.de
  */
 @Component
 public class DemandImportJobLauncherImpl implements DemandImportJobLauncher {
@@ -57,11 +62,18 @@ public class DemandImportJobLauncherImpl implements DemandImportJobLauncher {
 
     @Override
     public void launchDemandImportJob(String fileName) throws Exception {
-        jobLauncher.run(createDemandImportJob(itemReaderResourceLoader.getResourceFromClasspath(fileName)), new JobParameters());
+        jobLauncher.run(createDemandImportJob(itemReaderResourceLoader.getResourceFromClasspath(fileName)), getJobParameters(fileName));
+    }
+
+    private JobParameters getJobParameters(String fileName) {
+        Map<String, JobParameter> parameterMap = new LinkedHashMap<>();
+        parameterMap.put("file-name", new JobParameter(fileName));
+        parameterMap.put("start_date", new JobParameter(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant())));
+        return new JobParameters(parameterMap);
     }
 
     private Job createDemandImportJob(Resource resource) throws Exception {
-        return jobBuilderFactory.get("demandDataImportJob-"+ resource.getFilename() +"-"+ LocalDateTime.now().toString())
+        return jobBuilderFactory.get("demandDataImportJob")
                 .incrementer(new RunIdIncrementer())
                 .flow(stepBuilderFactory.get("priceimporter-step")
                         .<PriceRecord, CompositeRecord> chunk(chunkSize)
@@ -70,7 +82,7 @@ public class DemandImportJobLauncherImpl implements DemandImportJobLauncher {
                         .retry(DataIntegrityViolationException.class) // Retry on DataIntegrityViolationException for HANA
                         .skip(DuplicateKeyException.class)
                         .skip(DataIntegrityViolationException.class)
-                        .retryLimit(5)
+                        .retryLimit(15)
                         .reader(PriceRecordFlatFileItemReaderFactory.createReader(resource))
                         .processor(itemProcessor)
                         .writer(itemWriter)

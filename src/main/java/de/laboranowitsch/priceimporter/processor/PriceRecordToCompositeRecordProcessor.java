@@ -8,10 +8,18 @@ import org.springframework.batch.item.ItemProcessor;
  * Spring Batch {@link ItemProcessor} for transforming of {@link PriceRecord}
  * to {@link CompositeRecord}.
  *
- * Created by cla on 5/6/16.
+ * @author christian@laboranowitsch.de
  */
 public class PriceRecordToCompositeRecordProcessor implements ItemProcessor<PriceRecord, CompositeRecord>{
 
+    /**
+     * Flat CSV file based {@link PriceRecord}s are going to be converted into {@link CompositeRecord}s
+     * reflecting the Star-Schema based datastore.
+     *
+     * @param item of type {@link PriceRecord}
+     * @return {@link CompositeRecord} for being prepared for the writer
+     * @throws Exception
+     */
     @Override
     public CompositeRecord process(PriceRecord item) throws Exception {
         CompositeRecord compositeRecord = new CompositeRecord();

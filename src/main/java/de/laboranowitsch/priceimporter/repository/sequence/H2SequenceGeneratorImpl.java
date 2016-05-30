@@ -5,9 +5,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 /**
- * H2 {@link SequenceGenerator} implementation.
+ * H2 specific {@link SequenceGenerator} implementation used for the Repositories.
  *
- * Created by cla on 4/8/16.
+ * @author christian@laboranowitsch.de
  */
 public class H2SequenceGeneratorImpl implements SequenceGenerator {
 

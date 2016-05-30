@@ -1,7 +1,7 @@
 package de.laboranowitsch.priceimporter.repository.sequence;
 
 /**
- * SequenceIdGenerator for generating database sequences.
+ * SequenceIdGenerator for generating database sequences. Used by the Repositories.
  *
  * @author christian@laboranowitsch.de
  */

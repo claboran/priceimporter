@@ -11,7 +11,7 @@ import javax.sql.DataSource;
  * We are using H2 and Hana here. If you need other types as well you need to add it.
  * Tweak of {@link org.springframework.batch.item.database.support.DefaultDataFieldMaxValueIncrementerFactory}.
  *
- * Created by cla on 4/23/16.
+ * @author christian@laboranowitsch.de
  */
 public class CustomDataFieldMaxValueIncrementerFactory implements DataFieldMaxValueIncrementerFactory {
 
@@ -29,7 +29,7 @@ public class CustomDataFieldMaxValueIncrementerFactory implements DataFieldMaxVa
     }
 
     /**
-     * Creates the requested {@link DataFieldMaxValueIncrementer}
+     * Creates the requested {@link DataFieldMaxValueIncrementer}.
      *
      * @param databaseType
      * @param incrementerName
@@ -46,7 +46,7 @@ public class CustomDataFieldMaxValueIncrementerFactory implements DataFieldMaxVa
     }
 
     /**
-     * We have only two types implemented
+     * We have only two types implemented here H2 and SAP Hana.
      *
      * @param databaseType
      * @return true if the database is supported, else false

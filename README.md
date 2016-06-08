@@ -35,13 +35,13 @@ Fact data are Total Demand and Trading Interval Price on a 30 min. base for a ce
  
 A little Star Schema is going to be used. One Fact Table holding the Regional Reference Price RPR and the Total Demand for the control area:
     
-    **F_ENERGY_PRICE_DEMAND**
+    F_ENERGY_PRICE_DEMAND
 
 The Dimensions a splitted across three other tables:
 
-    *D_REGION* -> control area
-    *D_PERIOD_TYPE* -> Period type (actual trading or forecast)
-    *D_DATE_TIME* -> Holding the date time attributes (very simplified)
+    D_REGION -> control area
+    D_PERIOD_TYPE -> Period type (actual trading or forecast)
+    D_DATE_TIME -> Holding the date time attributes (very simplified)
 
 For the Fact table a last update win strategy has been taken into account.
 Batch Jobs will be started in parallel, to overcome "DuplicateKey" problems when Dimensions are going to be written the first time, Spring Batch is configured with

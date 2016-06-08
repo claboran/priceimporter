@@ -10,7 +10,7 @@ Technologies: Spring Boot, Spring JDBC, Spring Batch, Spring Rest, Spring Profil
 
 Summary: An example that shows how to integrate Spring Batch and SAP Hana
 
-Source: <https://github.com/claboran/spring-boot-jndi-multi>
+Source: <https://github.com/claboran/priceimporter>
 
 What is it?
 -----------

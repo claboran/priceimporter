@@ -82,7 +82,7 @@ public class DemandImportJobLauncherImpl implements DemandImportJobLauncher {
                         .retry(DataIntegrityViolationException.class) // Retry on DataIntegrityViolationException for HANA
                         .skip(DuplicateKeyException.class)
                         .skip(DataIntegrityViolationException.class)
-                        .retryLimit(15)
+                        .retryLimit(5)
                         .reader(PriceRecordFlatFileItemReaderFactory.createReader(resource))
                         .processor(itemProcessor)
                         .writer(itemWriter)

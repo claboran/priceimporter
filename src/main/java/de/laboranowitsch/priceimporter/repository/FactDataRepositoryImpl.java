@@ -72,9 +72,6 @@ public class FactDataRepositoryImpl implements FactDataRepository {
                         .dateTimeId(rs.getLong(6))
                         .build()));
 
-        if(result.size() > 1) {
-            throw new RuntimeException("Unexpected number of FactData entries found: " + result.size() + " only one is expected.");
-        }
         if(result.size() == 0) {
             return null;
         }

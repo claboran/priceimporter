@@ -52,9 +52,6 @@ public class PeriodRepositoryImpl implements PeriodRepository{
         List<Period> result = jdbcTemplate.query(periodQuery, sqlParameterSource,
                 ((rs, rowNum) -> Period.builder().id(rs.getLong(1)).period(rs.getString(2)).build()));
 
-        if(result.size() > 1) {
-            throw new RuntimeException("Unexpected number of Periods found: " + result.size() + " only one is expected.");
-        }
         if(result.size() == 0) {
             return null;
         }

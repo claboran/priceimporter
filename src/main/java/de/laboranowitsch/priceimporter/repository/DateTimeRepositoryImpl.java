@@ -68,9 +68,6 @@ public class DateTimeRepositoryImpl implements DateTimeRepository {
                         .minuteOfHour(rs.getInt(6))
                         .build()));
 
-        if(result.size() > 1) {
-            throw new RuntimeException("Unexpected number of DayTime entries found: " + result.size() + " only one is expected.");
-        }
         if(result.size() == 0) {
             return null;
         }

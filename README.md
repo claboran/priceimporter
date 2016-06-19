@@ -17,7 +17,7 @@ What is it?
 
 It is a sample - showcase , a deployable Maven 3 project to help you to set up a complete example running Spring Batch in conjunction with SAP Hana.
 It is full blown real world application focusing on showing several important aspects of integrating SAP Hana and Spring Batch. SAP Hana is an unsupported
-database platform for Spring Batch. So several challenges needs to be addressed:
+database platform for Spring Batch. Several challenges need to be addressed:
 
 1. Implement Sequence generation for Hana
 2. Extend Spring Batch infrastructure to support SAP Hana
@@ -31,21 +31,21 @@ a common use case. The example data has been taken from AEMO an Australian servi
 
 <http://www.aemo.com.au/Electricity/Data/Price-and-Demand/Price-and-Demand-Graphs/Current-Trading-Interval-Price-and-Demand-Graph-NSW>
    
-Fact data are Total Demand and Trading Interval Price on a 30 min. base for a certain control area (in the example New South Wales NSW).
+Fact data are 'Total Demand' and 'Trading Interval Price' on a 30 min. base for a certain control area (in the example New South Wales NSW).
  
-A little Star Schema is going to be used. One Fact Table holding the Regional Reference Price RPR and the Total Demand for the control area:
+A little Star Schema is going to be used. A fact table is holding the 'Regional Reference Price' RPR and the 'Total Demand' for the control area:
     
     F_ENERGY_PRICE_DEMAND
 
-The Dimensions a splitted across three other tables:
+The dimensions are divided across three other tables:
 
     D_REGION -> control area
     D_PERIOD_TYPE -> Period type (actual trading or forecast)
-    D_DATE_TIME -> Holding the date time attributes (very simplified)
+    D_DATE_TIME -> Holding the date and time attributes (very simplified)
 
-For the Fact table a last update win strategy has been taken into account.
-Batch Jobs will be started in parallel, to overcome "DuplicateKey" problems when Dimensions are going to be written the first time, Spring Batch is configured with
-Retries. So in case of an error of that kind a retry usually solves the problem.
+For the fact table a 'last update win' strategy has been taken into account.
+Batch Jobs will be started in parallel, to overcome 'Duplicate-Key' problems when dimensions are going to be written the first time, Spring Batch is configured with
+retries. So in case of an error of that kind the retry usually solves the problem.
 
 
 System requirements
@@ -57,7 +57,7 @@ System requirements
 Firs things first: Sign up for a free SAP Hana Developer account here: <https://hcp.sap.com/developers.html>
 
 If everything worked out as expected, you will end up with a cryptic user account like p194194567trial.
-Create a shared HANA database schema (eg. spring-batch) unfortunately there is no more detail information 
+Create a shared HANA database schema (eg. spring-batch). Unfortunately there is no more detail information 
 in the Hanatrial-cockpit available. I would expect to see my tables or something else useful (we will get to that later).
 
 You need to download the SAP Hana Cloud Platform SDK from here: <https://tools.hana.ondemand.com/#cloud>
@@ -127,7 +127,7 @@ _NOTE: The following build command assumes you have configured your Maven user s
 
 1. Run the Test with H2 database - mvn clean install -Pint-test-h2
 2. Run the tests with Hana database - mvn clean install -Pint-test-hana
-4. Configure the input directory for uploading the files
+4. Configure the input directory for uploading the files (application.properties file in the root folder of the project)
 5. Copy example files from src/main/resources/testdata to the input directory  
 6. Run the spring batch application on H2 - use the following parameter: spring.profiles.active=dev-h2 debug=true 
 7. Use a Rest client of choice for starting the import operation
